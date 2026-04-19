@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pptchartengine"
+version = "0.1.0"
+description = "Editable PowerPoint chart engine for dual-axis financial charts"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "python-pptx>=1.0.2",
+    "pandas>=2.2.0",
+    "lxml",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pptchartengine*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
