@@ -364,6 +364,11 @@ class ChartParser:
     def _is_missing_header(value) -> bool:
         if value is None:
             return True
+        try:
+            if pd.isna(value):
+                return True
+        except (TypeError, ValueError):
+            pass
         text = str(value).strip()
         return text == "" or text.lower().startswith("unnamed:")
 
