@@ -19,10 +19,10 @@
 要做：
 
 ```
-golden #1 端到端打通 → v0.1.0 →
-golden #2 端到端打通 → v0.2.0 →
-golden #3 端到端打通 → v0.3.0 →
-剩余 family 补齐 → v1.0.0
+performance_attribution → v0.1.0 →
+factor_style_analysis  → v0.2.0 →
+valuation_snapshot     → v0.3.0 →
+剩余 family 补齐        → v1.0.0
 ```
 
 每个 slice 都端到端：选定一份 golden → 它涉及的 family 各自补 L2 + L3 visual diff + skill cookbook + dogfood → 闸门全绿 → 发版（仅声明支持当前 slice 范围，参见 [ADR-0002](docs/adr/0002-vertical-first-quality-gates.md)）。
@@ -37,25 +37,28 @@ golden #3 端到端打通 → v0.3.0 →
 
 ## Milestones
 
-### M1 — 引擎清理 & Slice 准备（约 2 周）
+### M1 — 引擎清理 & Slice 准备（约 2 周，至 ~2026-05-15）
 
 **目标**：把当前未提交工作落地，建立 slice 1 起跑线。
 
-- [ ] 把 untracked 的 3 个文件（`plot_area.py`、`range_snapshot.py`、`semantic_family.py`）commit
-- [ ] 整理已 modified 文件的 commit 划分
-- [ ] LICENSE 文件加入（建议 Apache-2.0）
-- [ ] 选定 3 份 golden reference reports 并按优先级排序
-- [ ] 为 slice 1 选定的 golden 准备脱敏输入数据
-- [ ] 建立 `docs/prds/`、`goldens/` 目录骨架
-- [ ] `2026-04-19-range-snapshot-handover.md` 等历史 handover 文档归档或合并入 ADR（参见 ADR-0005 反文档腐烂）
+- [x] 把 untracked 的 3 个文件 commit（工程师 `7bbe1c7` 完成）
+- [x] 整理已 modified 文件的 commit（同上）
+- [x] LICENSE 文件加入（Apache-2.0）
+- [x] 选定 3 份 golden 并按分析类型命名、按优先级排序（[ADR-0003](docs/adr/0003-golden-reference-reports.md)）
+- [x] 建立 `docs/prds/` 目录骨架（含 [PRD-0001](docs/prds/0001-range-snapshot-visual-polish.md) range_snapshot 视觉精修）
+- [x] `2026-04-19-range-snapshot-handover.md` 归档到 `docs/prds/archive/`，关键判断转入 PRD-0001
+- [ ] 在 pptfi 仓库建立 `goldens/` 目录骨架
+- [ ] 为 slice 1 准备 `performance_attribution` 脱敏输入数据
 
-退出条件：`git status` clean、3 份 golden 选定、slice 1 的 golden 输入数据已脱敏入库。
+退出条件：`git status` clean、3 份 golden 选定（done）、slice 1 输入数据已脱敏入库。
 
-### Slice 1 — 第一份金标准端到端打通（+2 ~ +6 周，目标 v0.1.0）
+### Slice 1 — performance_attribution（+2 ~ +6 周，目标 v0.1.0）
 
-**目标**：选定的 golden #1 通过完整闸门，发布首个 pip 版本。
+**Golden**：业绩归因报告（基金 / 组合收益来源拆解）
 
-假设 golden #1 涉及 ~3-4 个 family（待 M1 选定后填入）。本 slice 内对**这些 family** 完成：
+**涉及 family**：`performance_compare` (combo) + `attribution_decomposition` (waterfall) + `regime_table_panel`
+
+**为什么作为首版**：所有涉及的 family 都是纯 native chart，视觉质量结构性最强，是稳健的 v0.1.0。
 
 L2 层：
 
@@ -66,7 +69,7 @@ L3 层：
 
 - [ ] PPT → PNG 渲染 pipeline（`soffice --headless`）
 - [ ] 视觉 diff 工具集成（pixelmatch 或 imagehash + 阈值）
-- [ ] golden #1 的端到端 fixture：输入 → 引擎 → pptx → png → diff
+- [ ] golden #1 端到端 fixture：输入 → 引擎 → pptx → png → diff
 - [ ] baseline 更新流程文档化
 
 Skill + Dogfood：
@@ -87,24 +90,33 @@ Skill + Dogfood：
 
 退出条件：v0.1.0 在国内镜像可装、golden #1 在 CI nightly 自动比对绿、README 准确反映支持范围。
 
-### Slice 2 — 第二份金标准（+6 ~ +9 周，目标 v0.2.0）
+### Slice 2 — factor_style_analysis（+6 ~ +9 周，目标 v0.2.0）
 
-**目标**：复用 slice 1 的脚手架，扩展支持 family。
+**Golden**：因子风格分析报告（组合在风格 / 因子上的暴露）
 
-- [ ] golden #2 涉及的新 family（去重后）补 L2
+**涉及 family**（去重后新增）：`style_box` (scatter) + `factor_exposure` (combo) + `style_allocation` + `score_overlay`
+
+**为什么 slice 2**：引入 scatter family 端到端验证；combo 已经在 slice 1 跑通，只需扩展场景。
+
+- [ ] 上述 family 各补 L2
 - [ ] golden #2 端到端 fixture 接入
 - [ ] skill cookbook 增补对应场景
 - [ ] dogfood 扩展
 - [ ] v0.2.0 发版，CHANGELOG 与 README 更新声明范围
-- [ ] 复盘 slice 1 的反馈，回写 ADR / 修订工程纪律
+- [ ] 复盘 slice 1 反馈，回写 ADR / 修订工程纪律
 
 退出条件：v0.2.0 发版、L2 + L3 + dogfood 在新增范围内全绿。
 
-### Slice 3 — 第三份金标准（+9 ~ +11 周，目标 v0.3.0）
+### Slice 3 — valuation_snapshot（+9 ~ +12 周，目标 v0.3.0）
 
-**目标**：覆盖第三类金融报告场景。
+**Golden**：估值快照报告（市场 / 行业当前估值在历史区间位置）
 
-- [ ] golden #3 涉及 family L2
+**涉及 family**：`range_snapshot` + `score_overlay`（复用）+ `heatmap_matrix`
+
+**前置依赖**：[PRD-0001](docs/prds/0001-range-snapshot-visual-polish.md) 视觉精修必须在本 slice 内完成。range_snapshot 当前是 native chart + custom overlay 复合结构，视觉质量低于 combo，需调参精修。
+
+- [ ] PRD-0001 range_snapshot 视觉精修：plot area / bar gap / tick label / current label / axis break 调参
+- [ ] heatmap_matrix family L2
 - [ ] golden #3 端到端 fixture
 - [ ] skill cookbook 增补
 - [ ] dogfood 扩展
@@ -112,7 +124,7 @@ Skill + Dogfood：
 
 退出条件：3 份 golden 在 CI nightly 全部稳定通过 ≥ 2 周。
 
-### M-final — 剩余 family 补齐（+11 ~ +16 周，目标 v1.0.0）
+### M-final — 剩余 family 补齐（+12 ~ +16 周，目标 v1.0.0）
 
 **目标**：剩余 semantic family 按 [ADR-0004](docs/adr/0004-round-trip-metadata-principle.md) round-trip 约束逐个补齐。
 
@@ -146,5 +158,6 @@ Skill + Dogfood：
 | 字体跨平台差异导致视觉 diff 假阳性 | 阈值容忍 + 锁定 CI 渲染环境（Docker 镜像） |
 | pip 与 skill 双 release 漂移 | skill pin 引擎版本，CI 检查兼容性矩阵 |
 | 早期 slice 暴露架构假设错误 | 这正是垂直切片的目的——v0.1.0 时纠正比 v1.0.0 时纠正便宜 |
+| range_snapshot 视觉精修未完成阻塞 v0.3.0 | PRD-0001 显式跟踪；如必要可推迟 v0.3.0 |
 | 19 个 family 测试体量爆炸 | 每个 slice 只覆盖该 slice 需要的 family；剩余在 M-final 用 parametric fixture 复用断言 |
-| 真实金融数据合规 | 脱敏后版本入 golden，保留行业代码隐去公司名 |
+| 真实金融数据合规 | 脱敏后版本入 golden，按分析类型命名隐去具体主题 |
