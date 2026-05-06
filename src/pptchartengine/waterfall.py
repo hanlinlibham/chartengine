@@ -498,9 +498,13 @@ def _hide_bar_series(ser_element) -> None:
     for child in list(spPr):
         spPr.remove(child)
 
+    # OOXML CT_ShapeProperties requires the fill choice (noFill/solidFill/...)
+    # to precede <a:ln>. With the order swapped, PowerPoint silently ignores
+    # the fill and falls back to the theme color, making the "invisible" Base
+    # series visible — which breaks the waterfall stacked-bridge illusion.
+    etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}noFill")
     ln = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}ln")
     etree.SubElement(ln, f"{{{NAMESPACES['a']}}}noFill")
-    etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}noFill")
 
 
 def _set_bar_series_color(ser_element, color: str) -> None:
@@ -511,11 +515,11 @@ def _set_bar_series_color(ser_element, color: str) -> None:
     for child in list(spPr):
         spPr.remove(child)
 
-    ln = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}ln")
-    etree.SubElement(ln, f"{{{NAMESPACES['a']}}}noFill")
     solid_fill = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}solidFill")
     srgb = etree.SubElement(solid_fill, f"{{{NAMESPACES['a']}}}srgbClr")
     srgb.set("val", color)
+    ln = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}ln")
+    etree.SubElement(ln, f"{{{NAMESPACES['a']}}}noFill")
 
 
 def _add_waterfall_overlays(

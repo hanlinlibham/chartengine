@@ -117,7 +117,11 @@ def apply_series_style(
     parent = ser_element.getparent()
     parent_tag = parent.tag.split('}')[1] if '}' in parent.tag else parent.tag
     is_area_or_bar = parent_tag in ('barChart', 'areaChart')
-    
+    # OOXML schema: <c:marker> is only a valid child of <c:ser> in lineChart,
+    # scatterChart, and radarChart series. CT_BarSer / CT_AreaSer / CT_BubbleSer
+    # do not allow it, and PowerPoint refuses to open files where it appears.
+    marker_allowed = parent_tag in ('lineChart', 'scatterChart', 'radarChart')
+
     # 查找或创建 spPr (shape properties) 元素
     spPr = ser_element.find('c:spPr', namespaces=NAMESPACES)
     if spPr is None:
@@ -125,13 +129,13 @@ def apply_series_style(
         insert_index = _find_insert_position(ser_element, 'spPr')
         spPr = etree.Element(f"{{{NAMESPACES['c']}}}spPr")
         ser_element.insert(insert_index, spPr)
-    
+
     # 应用线条样式（传入图表类型信息）
     if line_width is not None or color is not None:
         _apply_line_style(spPr, color, line_width, is_area_or_bar)
-    
-    # 应用标记点样式
-    if marker_style is not None:
+
+    # 应用标记点样式（仅对支持 marker 的图表类型）
+    if marker_style is not None and marker_allowed:
         _apply_marker_style(ser_element, marker_style, marker_size, color)
 
 
@@ -145,34 +149,28 @@ def _apply_line_style(spPr, color: str = None, line_width: int = None, is_area_o
         line_width: 线宽
         is_area_or_bar: 是否为面积图或柱状图（这些图表类型需要设置填充色而非边框色）
     """
-    # 清除现有的 ln 元素
-    for ln in spPr.findall('a:ln', namespaces=NAMESPACES):
-        spPr.remove(ln)
-    
-    # 创建新的 ln (line) 元素
-    ln = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}ln")
-    
-    # ⭐ 如果是面积图或柱状图，设置为无边框
+    # 清除现有的 ln 与 solidFill（重新构造）
+    for tag in ('ln',):
+        for el in spPr.findall(f'a:{tag}', namespaces=NAMESPACES):
+            spPr.remove(el)
+    for fill in spPr.findall('a:solidFill', namespaces=NAMESPACES):
+        spPr.remove(fill)
+
+    # ⭐ OOXML CT_ShapeProperties 要求 fill 选项在 <a:ln> 之前。
+    # 顺序错了会让 PowerPoint 忽略 fill / 用主题色回退。
     if is_area_or_bar:
-        # 设置为无边框（noFill）
-        noFill = etree.SubElement(ln, f"{{{NAMESPACES['a']}}}noFill")
-        
-        # ⭐ 核心修复：为柱状图/面积图添加填充色
+        # 柱状图 / 面积图：先 fill 再 ln（无边框）
         if color is not None:
-            # 清除现有的 solidFill 元素
-            for fill in spPr.findall('a:solidFill', namespaces=NAMESPACES):
-                spPr.remove(fill)
-            
-            # 在 ln 之后添加 solidFill
             solidFill = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}solidFill")
             srgbClr = etree.SubElement(solidFill, f"{{{NAMESPACES['a']}}}srgbClr")
             srgbClr.set('val', color)
+        ln = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}ln")
+        etree.SubElement(ln, f"{{{NAMESPACES['a']}}}noFill")
     else:
-        # 折线图/散点图：设置线宽和颜色
+        # 折线图 / 散点图：颜色在 ln 内（描边色），spPr 不需要顶层 fill
+        ln = etree.SubElement(spPr, f"{{{NAMESPACES['a']}}}ln")
         if line_width is not None:
             ln.set('w', str(line_width))
-        
-        # 设置线条颜色
         if color is not None:
             solidFill = etree.SubElement(ln, f"{{{NAMESPACES['a']}}}solidFill")
             srgbClr = etree.SubElement(solidFill, f"{{{NAMESPACES['a']}}}srgbClr")

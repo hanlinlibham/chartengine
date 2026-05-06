@@ -109,7 +109,7 @@ def create_bubble_chart(
         size[1],
         chart_data,
     ).chart
-    _style_xy_or_bubble_chart(chart, color=color, marker_size=marker_size)
+    _style_xy_or_bubble_chart(chart, color=color, marker_size=marker_size, is_bubble=True)
     _write_embedded_metadata(
         chart,
         x_col,
@@ -252,10 +252,15 @@ def _read_xy_workbook_dataframe(workbook, metadata: dict[str, Any]) -> pd.DataFr
     return pd.DataFrame(data, columns=columns)
 
 
-def _style_xy_or_bubble_chart(chart, *, color: str, marker_size: int) -> None:
+def _style_xy_or_bubble_chart(chart, *, color: str, marker_size: int, is_bubble: bool = False) -> None:
     chart.has_legend = False
     series = chart.series[0]
-    series.marker.size = marker_size
+    # OOXML schema: CT_BubbleSer does not allow <c:marker>; setting it makes
+    # PowerPoint flag the file as needing repair. Bubble size is encoded via
+    # <c:bubbleSize> alone, so the visible dot is sized from the data, not
+    # from a marker style.
+    if not is_bubble:
+        series.marker.size = marker_size
     series.format.fill.solid()
     series.format.fill.fore_color.rgb = RGBColor.from_string(color)
     try:
