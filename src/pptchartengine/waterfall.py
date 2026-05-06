@@ -183,11 +183,22 @@ def create_waterfall_chart(
     negative_color: str = DEFAULT_NEGATIVE,
     total_color: str = DEFAULT_TOTAL,
     show_legend: bool = False,
-    show_connectors: bool = True,
+    show_connectors: bool = False,
     show_value_labels: bool = True,
     label_font_name: str = "微软雅黑",
 ):
-    """Create an editable waterfall chart using stacked columns."""
+    """Create an editable waterfall chart using stacked columns.
+
+    ``show_connectors`` defaults to False because the slide-level connector
+    overlay is computed against a hardcoded plot-area inset that does not
+    match Windows PowerPoint's actual auto-layout, so the rectangles drift
+    above the bar tops by ~0.5 chart units. Aligning them properly would
+    require pinning the chart's plot area and value-axis range, which is
+    a larger refactor tracked separately. Callers who explicitly opt back
+    in via ``show_connectors=True`` will still get the (slightly drifted)
+    rectangles — that path is preserved for macOS users where the inset
+    happened to line up.
+    """
 
     waterfall_spec = build_waterfall_spec(
         df,
