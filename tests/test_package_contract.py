@@ -182,6 +182,40 @@ def test_round_trip_recovers_categories_col_and_series_keys(tmp_path):
     assert isinstance(layout_info, dict)
 
 
+def test_round_trip_recovers_categories_col_with_ascii_header(tmp_path):
+    # Pins the metadata fallback for the case where the embedded workbook
+    # leaves the first header cell blank — the failure mode previously
+    # surfaced only because every other combo bar/line round-trip test
+    # happened to use a non-ASCII categories_col.
+    df = pd.DataFrame(
+        {
+            "year": [2021, 2022, 2023, 2024],
+            "revenue": [100.0, 110.0, 120.0, 140.0],
+            "profit": [10.0, 12.5, 15.0, 18.0],
+        }
+    )
+    prs = Presentation()
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    create_combo_chart(
+        slide=slide,
+        df=df,
+        categories_col="year",
+        series_config=[
+            {"key": "revenue", "name": "Revenue", "type": "bar", "axis": "primary"},
+            {"key": "profit", "name": "Profit", "type": "line", "axis": "secondary"},
+        ],
+    )
+
+    output = tmp_path / "roundtrip-ascii.pptx"
+    prs.save(output)
+
+    series_config, parsed_df, categories_col, _ = parse_chart_from_pptx(str(output))
+
+    assert categories_col == "year"
+    assert [series["key"] for series in series_config] == ["revenue", "profit"]
+    assert list(parsed_df.columns) == ["year", "Revenue", "Profit"]
+
+
 def test_round_trip_recovers_stacked_grouping(tmp_path):
     df = pd.DataFrame(
         {
