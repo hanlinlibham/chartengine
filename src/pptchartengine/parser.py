@@ -364,7 +364,16 @@ class ChartParser:
     def _is_missing_header(value) -> bool:
         if value is None:
             return True
+        # pandas surfaces None column names as float NaN (and pd.NA as <NA>);
+        # treat any null-like header as missing so metadata fallback kicks in.
+        try:
+            if pd.isna(value):
+                return True
+        except (TypeError, ValueError):
+            pass
         text = str(value).strip()
+        if text.lower() in ("nan", "none", "<na>"):
+            return True
         return text == "" or text.lower().startswith("unnamed:")
 
     def _infer_categories_col_name(self, series: pd.Series) -> str:
