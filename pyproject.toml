@@ -9,10 +9,14 @@ description = "Editable PowerPoint chart engine for dual-axis financial charts"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "python-pptx>=1.0.2",
-    "pandas>=2.2.0",
-    "lxml",
-    "openpyxl>=3.1.5",
+    # Upper bounds pinned 2026-05-24: pandas 3.0 broke chart metadata round-trip
+    # (categories_col read back as NaN); numpy 2.x ABI mismatch.
+    # When relaxing, re-run full `pytest tests/` and verify all 29 contract tests stay green.
+    "python-pptx>=1.0.2,<1.1",
+    "pandas>=2.2,<3",
+    "numpy>=1.26,<2",
+    "lxml>=5,<6",
+    "openpyxl>=3.1,<4",
 ]
 
 [tool.setuptools.packages.find]

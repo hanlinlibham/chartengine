@@ -22,9 +22,8 @@ import io
 from openpyxl import load_workbook
 
 from .oxml_ns import NAMESPACES
+from .metadata import METADATA_SHEET_NAME
 from .semantic_anchor import iter_semantic_anchors
-
-METADATA_SHEET_NAME = "_pptchartengine_meta"
 
 
 class ChartParser:

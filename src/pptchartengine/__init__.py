@@ -145,6 +145,23 @@ from .semantic_family import (
     parse_semantic_chart_from_layout_info,
 )
 
+from .inspect import (
+    ChartInventoryItem,
+    ChartSelector,
+    inspect_pptx_charts,
+)
+from .metadata import (
+    METADATA_SCHEMA_VERSION,
+    METADATA_SHEET_NAME,
+    ChartMetadataV1,
+    write_chart_metadata,
+)
+from .replace import (
+    ReplaceResult,
+    SeriesData,
+    replace_pptx_chart_data,
+)
+
 __version__ = "0.1.0"
 
 __all__ = [
@@ -265,4 +282,17 @@ __all__ = [
     "parse_waterfall_chart",
     "parse_waterfall_from_pptx",
     "WaterfallParseResult",
+    # ADR-0007 §1 — inspect lifecycle (ADR-0006 §1)
+    "ChartInventoryItem",
+    "ChartSelector",
+    "inspect_pptx_charts",
+    # ADR-0007 §1 — metadata lifecycle (ADR-0004 §2 + ADR-0007 §3)
+    "ChartMetadataV1",
+    "METADATA_SCHEMA_VERSION",
+    "METADATA_SHEET_NAME",
+    "write_chart_metadata",
+    # ADR-0007 §1 — replace lifecycle (ADR-0006 §2)
+    "ReplaceResult",
+    "SeriesData",
+    "replace_pptx_chart_data",
 ]

@@ -15,8 +15,12 @@ import pandas as pd
 
 from .builder import ChartBuilder
 from .date_axis import format_category_label
+from .metadata import (
+    METADATA_SCHEMA_VERSION,
+    METADATA_SHEET_NAME,
+    _write_embedded_metadata,
+)
 
-METADATA_SHEET_NAME = "_pptchartengine_meta"
 XY_CHART_TYPES = ("scatter", "bubble")
 
 # 导入样式模块
@@ -428,66 +432,13 @@ def _fix_embedded_excel_dates(chart, df: pd.DataFrame, categories_col: str):
         traceback.print_exc()
 
 
-def _write_embedded_metadata(
-    chart,
-    categories_col: str,
-    series_config: List[Dict],
-    metadata: Optional[Dict] = None,
-):
-    """Persist round-trip metadata into the embedded workbook.
-
-    This lets `ChartParser` recover semantic fields such as the original
-    `categories_col` and `series key` values instead of inferring them from
-    workbook headers alone.
-    """
-
-    try:
-        from openpyxl import load_workbook
-        import io
-
-        chart_part = chart.part
-        xlsx_part = chart_part.chart_workbook.xlsx_part
-        xlsx_stream = io.BytesIO(xlsx_part.blob)
-        wb = load_workbook(xlsx_stream)
-
-        if METADATA_SHEET_NAME in wb.sheetnames:
-            del wb[METADATA_SHEET_NAME]
-
-        ws = wb.create_sheet(METADATA_SHEET_NAME)
-        ws.sheet_state = "hidden"
-        ws["A1"] = "schema_version"
-        ws["B1"] = "2"
-        ws["A2"] = "categories_col"
-        ws["B2"] = categories_col
-        ws["A3"] = "series_count"
-        ws["B3"] = len(series_config)
-        ws["A4"] = "chart_family"
-        ws["B4"] = metadata.get("chart_family") if metadata else None
-        ws["A5"] = "chart_metadata_json"
-        ws["B5"] = json.dumps(metadata, ensure_ascii=False) if metadata else None
-        ws.append([])
-        ws.append(["series_index", "key", "name", "type", "axis", "grouping", "x_key", "size_key"])
-
-        for index, series in enumerate(series_config):
-            ws.append(
-                [
-                    index,
-                    series.get("key"),
-                    series.get("name"),
-                    series.get("type"),
-                    series.get("axis"),
-                    series.get("grouping"),
-                    series.get("x_key"),
-                    series.get("size_key"),
-                ]
-            )
-
-        output_stream = io.BytesIO()
-        wb.save(output_stream)
-        xlsx_part._blob = output_stream.getvalue()
-
-    except Exception as e:
-        print(f"  ⚠️ 写入图表元数据失败: {e}")
+# Metadata persistence moved to ``pptchartengine.metadata`` (2026-05-24).
+# ``_write_embedded_metadata`` is now re-exported from this module via the
+# top-of-file ``from .metadata import _write_embedded_metadata``, so callers
+# that do ``from .api import _write_embedded_metadata`` continue working
+# unchanged. The legacy 60-line implementation that used to live here has
+# been moved verbatim to ``metadata._write_workbook_hidden_sheet`` and is
+# now the single source of truth.
 
 
 # ============================================================================
