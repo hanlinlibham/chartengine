@@ -60,7 +60,7 @@ class ChartBuilder:
         self.categories_col = categories_col
         self.style_config = style_config if style_config is not None else DEFAULT_STYLE_CONFIG
         self.layout_config = layout_config  # 布局配置
-        self.polish = polish  # McKinsey 收尾处理
+        self.polish = polish  # 报告级收尾处理
         self.date_format = date_format  # 日期分类的 strftime 格式（如 '%Y/%m'）
         self.orientation = orientation  # 'vertical' | 'horizontal'（条形图）
         
@@ -290,7 +290,7 @@ class ChartBuilder:
         except Exception as e:
             print(f"  → ChartJunkCleaner skipped: {e}")
 
-        # 6. ⭐ McKinsey 收尾：智能轴范围、双轴对齐、柱宽、排版降噪
+        # 6. ⭐ 报告级收尾：智能轴范围、双轴对齐、柱宽、排版降噪
         if self.polish:
             try:
                 from .polish import polish_combo_chart
@@ -323,9 +323,9 @@ class ChartBuilder:
                     val_text=_text_pref(lc.value_axis_config) if lc else None,
                     sec_text=_text_pref(lc.secondary_value_axis_config) if lc else None,
                 )
-                print(f"  → McKinsey polish applied")
+                print(f"  → polish applied")
             except Exception as e:
-                print(f"  → McKinsey polish skipped: {e}")
+                print(f"  → polish skipped: {e}")
 
         print("\n" + "=" * 80)
         print("✅ 组合图构建完成！")

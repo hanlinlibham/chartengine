@@ -18,7 +18,7 @@ from .api import create_combo_chart
 from .oxml_ns import NAMESPACES
 from .parser import ChartParser
 
-# 哑光金融配色：鼠尾草绿 / 砖红 / 海军蓝（与 mckinsey 主题同系）
+# 哑光金融配色：鼠尾草绿 / 砖红 / 海军蓝（与 advisory 主题同系）
 DEFAULT_POSITIVE = "588157"
 DEFAULT_NEGATIVE = "B0413E"
 DEFAULT_TOTAL = "1F3864"
@@ -202,7 +202,7 @@ def create_waterfall_chart(
 
     绘图区通过 manualLayout 钉定、值轴范围显式设定，因此 slide 级 overlay
     （数值标签 / 连接线）与柱体精确对位，``show_connectors`` 默认开启。
-    McKinsey 惯例默认隐藏值轴（数值标签承载信息），``show_y_axis=True`` 可显示。
+    专业市场报告惯例默认隐藏值轴（数值标签承载信息），``show_y_axis=True`` 可显示。
     """
 
     waterfall_spec = build_waterfall_spec(

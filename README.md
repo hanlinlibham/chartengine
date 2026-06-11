@@ -38,7 +38,7 @@ render_chart(slide, {
 - `validate_spec()`
 - `chart_spec_reference()`
 
-### 0.5 McKinsey 收尾（默认开启）
+### 0.5 报告级收尾 polish（默认开启）
 
 所有创建入口默认执行 `polish` pass（`polish=False` 关闭）：
 
@@ -47,9 +47,9 @@ render_chart(slide, {
 - 瀑布图：绘图区 manualLayout 钉定 + 显式轴范围，数值标签/连接线精确对位，
   默认隐藏值轴、哑光配色（鼠尾草绿/砖红/海军蓝）、千分位标签、防碰撞布局
 - 散点/气泡：两轴 nice 缩放（不浪费画面）、气泡 72% 透明度、刻度标签固定底部
-- 配色新增 `mckinsey` 主题；`default` 改为深色优先
+- 配色新增 `advisory` 主题；`default` 改为深色优先
 
-### 0.8 GTM 模式库（提炼自 J.P. Morgan《Guide to the Markets》）
+### 0.8 GTM 模式库（通用市场报告版式，General Theme for Markets）
 
 面向真实金融场景的图型与注释元素：
 

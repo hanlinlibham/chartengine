@@ -1,4 +1,4 @@
-"""McKinsey 级图表收尾（polish pass）。
+"""报告级图表收尾（polish pass）。
 
 在图表 XML 构建完成后统一执行的"设计规范"处理，解决默认 Office 外观的几个硬伤：
 

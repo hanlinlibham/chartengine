@@ -1335,7 +1335,7 @@ _SPEC_REFERENCE = """\
    "stacked": true, "color": "#C00000", "line_width": 2, "marker": "circle"}
 - stacked: true → 全部柱状系列堆叠; grouping: "percent" → 百分比堆叠
 - style: {"theme": "jp_finance", "colors": ["#1B3D6E","#C9A84C"], "line_width": 1.5, "marker": "none"}
-  可用主题: midnight/charcoal/jp_finance/pension_warm/tech_blue/state_red/esg_green/dark_pro/morningstar/macro_research
+  可用主题: advisory/gtm/midnight/charcoal/jp_finance/pension_warm/tech_blue/state_red/esg_green/dark_pro/daybreak/macro_research
 - layout:
   - legend: "bottom|top|left|right|corner|none" 或 {"position":..,"font_size":9}
   - y_axis / y2_axis: {"format": "percent|0.00|#,##0", "min":0, "max":1, "unit":0.2, "gridlines": false}

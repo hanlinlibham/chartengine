@@ -13,7 +13,7 @@
   at the decoding layer while additionalProperties stays open for the
   tolerant alias layer. Pairs with validate_spec() for semantics.
 
-- `PCE-008` Professional polish round vs JPM GTM benchmark.
+- `PCE-008` Professional polish round vs market-guide benchmark deck.
   Result: title+subtitle system (bold near-black title + gray unit line, all chart
   kinds, left-aligned paragraphs); range chart refined (40%-slot bars, average dash
   dynamically wider than bar, white-bordered current diamond, 0"x" axis format,
@@ -31,7 +31,7 @@
   inference mode when two columns differ >50x in magnitude. Assessment doc:
   workspace/260611/模型能力评估.md.
 
-- `PCE-006` GTM pattern library (distilled from J.P. Morgan Guide to the Markets).
+- `PCE-006` GTM pattern library (general market-guide deck patterns).
   Result: contribution preset (stacked parts + orange total line, palette skips
   orange), new `create_range_chart` family (range bar + average dash + current
   diamond, embedded metadata), horizontal bar orientation, native value labels
@@ -40,7 +40,7 @@
   vline, last-point dot + date/value callout) on pinned plot area. New `gtm`
   color scheme. All spec-addressable; 15 new tests.
 
-- `PCE-005` McKinsey-grade visual polish pass.
+- `PCE-005` Report-grade visual polish pass.
   Result: new `polish.py` runs after every build — smart nice-range axis scaling
   (4/5/6-tick joint optimization, dual axes share tick count so gridlines align),
   gapWidth 80/50, sans title 13pt bold left-aligned, gray 9pt axis text, value-axis
@@ -50,7 +50,7 @@
   collision-aware label placement). Scatter/bubble get nice-range zoom, bottom
   tick labels, bubble alpha 72%. Fixed strftime cascade bug (`yyyy/mm` → literal
   `%mm` on axis) and daily-data duplicate month labels (granularity-aware format).
-  Schemes: new `mckinsey`; `default` reordered dark-first. Opt out via `polish=False`
+  Schemes: new `advisory`; `default` reordered dark-first. Opt out via `polish=False`
   / spec `"polish": false`.
 
 - `PCE-004` Declarative spec layer for low-capability LLM callers.

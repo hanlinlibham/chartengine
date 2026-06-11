@@ -1,4 +1,4 @@
-"""McKinsey 收尾层（polish）单元测试。"""
+"""报告级收尾层（polish）单元测试。"""
 
 import pytest
 
