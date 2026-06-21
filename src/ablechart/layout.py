@@ -13,6 +13,66 @@ from typing import Optional, Dict, Any
 
 from ._log import debug_print as print
 
+_C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
+_A_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+
+# CT_CatAx / CT_ValAx child order; ``title`` must sit after these and before
+# numFmt/majorTickMark/... (OOXML is order-sensitive).
+_AXIS_PRE_TITLE_TAGS = ("axId", "scaling", "delete", "axPos",
+                        "majorGridlines", "minorGridlines")
+
+
+def _write_axis_title(ax, text, *, font_name=None, font_size_pt=None):
+    """Insert a ``c:title`` into a value/category axis lxml element.
+
+    Works on raw ``c:valAx`` / ``c:catAx`` elements so it covers the primary,
+    secondary, and category axes uniformly (python-pptx only exposes the
+    primary pair). Idempotent: replaces any existing axis title.
+    """
+    from lxml import etree
+
+    def c(tag):
+        return f"{{{_C_NS}}}{tag}"
+
+    def a(tag):
+        return f"{{{_A_NS}}}{tag}"
+
+    existing = ax.find(c("title"))
+    if existing is not None:
+        ax.remove(existing)
+
+    title = etree.Element(c("title"))
+    tx = etree.SubElement(title, c("tx"))
+    rich = etree.SubElement(tx, c("rich"))
+    etree.SubElement(rich, a("bodyPr"))
+    etree.SubElement(rich, a("lstStyle"))
+    p = etree.SubElement(rich, a("p"))
+    pPr = etree.SubElement(p, a("pPr"))
+    defRPr = etree.SubElement(pPr, a("defRPr"))
+    defRPr.set("b", "0")
+    if font_size_pt:
+        defRPr.set("sz", str(int(font_size_pt * 100)))
+    if font_name:
+        etree.SubElement(defRPr, a("latin")).set("typeface", font_name)
+    r = etree.SubElement(p, a("r"))
+    rPr = etree.SubElement(r, a("rPr"))
+    rPr.set("lang", "en-US")
+    if font_size_pt:
+        rPr.set("sz", str(int(font_size_pt * 100)))
+    if font_name:
+        etree.SubElement(rPr, a("latin")).set("typeface", font_name)
+    etree.SubElement(r, a("t")).text = text
+    overlay = etree.SubElement(title, c("overlay"))
+    overlay.set("val", "0")
+
+    # Insert right after the last pre-title child so element order stays valid.
+    insert_at = 0
+    for i, child in enumerate(ax):
+        if etree.QName(child).localname in _AXIS_PRE_TITLE_TAGS:
+            insert_at = i + 1
+    ax.insert(insert_at, title)
+
+
 # ============================================================================
 # 图例配置
 # ============================================================================
@@ -96,6 +156,7 @@ class CategoryAxisConfig:
         number_format: Optional[str] = None,
         font_size_pt: float = 10,
         font_name: str = "微软雅黑",
+        axis_title: Optional[str] = None,
     ):
         """
         初始化横轴配置
@@ -119,7 +180,8 @@ class CategoryAxisConfig:
         self.number_format = number_format
         self.font_size_pt = font_size_pt
         self.font_name = font_name
-    
+        self.axis_title = axis_title
+
     def apply_to_chart(self, chart):
         """应用到图表"""
         try:
@@ -158,7 +220,13 @@ class CategoryAxisConfig:
             if self.font_name:
                 category_axis.tick_labels.font.name = self.font_name
             print(f"  - 横轴字体: {self.font_name} {self.font_size_pt}pt")
-                
+
+            # 轴标题
+            if self.axis_title:
+                _write_axis_title(category_axis._element, self.axis_title,
+                                  font_name=self.font_name, font_size_pt=self.font_size_pt)
+                print(f"  - 横轴标题: {self.axis_title}")
+
         except Exception as e:
             print(f"  ⚠️ 横轴配置失败: {e}")
 
@@ -182,6 +250,7 @@ class ValueAxisConfig:
         min_value: Optional[float] = None,
         max_value: Optional[float] = None,
         major_unit: Optional[float] = None,
+        axis_title: Optional[str] = None,
     ):
         """
         初始化纵轴配置
@@ -208,7 +277,8 @@ class ValueAxisConfig:
         self.min_value = min_value
         self.max_value = max_value
         self.major_unit = major_unit
-    
+        self.axis_title = axis_title
+
     def apply_to_chart(self, chart):
         """应用到图表（主值轴）"""
         try:
@@ -253,6 +323,12 @@ class ValueAxisConfig:
             if self.font_size_pt or self.font_name:
                 self._apply_font_to_axis_xml(primary_ax, self.font_name, self.font_size_pt)
                 print(f"  - 主值轴字体: {self.font_name} {self.font_size_pt}pt")
+
+            # 轴标题
+            if self.axis_title:
+                _write_axis_title(primary_ax, self.axis_title,
+                                  font_name=self.font_name, font_size_pt=self.font_size_pt)
+                print(f"  - 主值轴标题: {self.axis_title}")
             
             # 设置轴范围和刻度间隔（通过 XML）
             if self.min_value is not None or self.max_value is not None:
@@ -459,6 +535,12 @@ class ChartLayoutConfig:
                     num_fmt.set('formatCode', config.number_format)
                     num_fmt.set('sourceLinked', '0')
                 print(f"  - 次值轴格式: {config.number_format}")
+
+            # 轴标题
+            if config.axis_title:
+                _write_axis_title(secondary_ax, config.axis_title,
+                                  font_name=config.font_name, font_size_pt=config.font_size_pt)
+                print(f"  - 次值轴标题: {config.axis_title}")
             
             # 设置字体
             if config.font_size_pt or config.font_name:

@@ -2,6 +2,22 @@
 
 All notable changes to `ablechart` will be documented in this file.
 
+## 0.2.0 - Unreleased
+
+Added (issue #9, Gap A — report-grade "last mile", first slice):
+
+- **Axis titles**: `axis_title` field on `CategoryAxisConfig` and
+  `ValueAxisConfig`, written as native `c:catAx`/`c:valAx > c:title` on the
+  category axis and both value axes (primary + secondary). Round-trips through
+  save/reopen; off by default.
+- Document the remaining styling-granularity gaps (tick-label rotation, log
+  scale, display units, legend-entry control) in README `## Current Limits`.
+- Rename the debug env var to `ABLECHART_DEBUG_STDOUT` (old
+  `PPTCHARTENGINE_DEBUG_STDOUT` kept as an alias).
+
+Still open from issue #9: tick-label rotation, legend-entry control, and
+axis-resolution by `axId` instead of `axPos` (Gap B).
+
 ## 0.1.1 - 2026-06-21
 
 Security hardening (no exploitable issue in 0.1.0; defense-in-depth):
