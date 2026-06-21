@@ -219,9 +219,9 @@ and bubble charts.
 Styling granularity also has known gaps. Supported: legend (5 preset
 positions), per-axis number format / font / range / gridlines / tick marks
 (primary and secondary), **axis titles** (category + both value axes), and
-**tick-label rotation**. Not yet implemented: log scale, native display units
-(thousands / millions), and legend-entry-level control (hiding a single
-series' legend entry or manual legend placement).
+**tick-label rotation**, and **hiding a single series from the legend**
+(`show_in_legend=False`). Not yet implemented: log scale, native display units
+(thousands / millions), and manual (XY) legend placement.
 
 ## Development
 

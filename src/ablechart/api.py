@@ -168,8 +168,25 @@ def create_combo_chart(
     
     # 注意：引导图表已经创建了第一个系列，构建器会继续追加
     # 如果需要完全自定义，可以在 builder.clear_bootstrap_chart() 中清理
-    
-    return builder.build(series_config)
+
+    chart = builder.build(series_config)
+
+    # 系列级图例控制：series_config 中标了 show_in_legend=False（或 legend=False）
+    # 的系列，从图例中隐藏其条目（polish 不触碰 legend，故此处安全）。
+    _hide_series_from_legend(chart, series_config)
+    return chart
+
+
+def _hide_series_from_legend(chart, series_config):
+    """Hide individual series from the legend per series_config flags."""
+    from .annotations import find_series_element, delete_legend_entry, _series_index
+
+    for cfg in series_config:
+        if cfg.get("show_in_legend") is False or cfg.get("legend") is False:
+            name = cfg.get("name", cfg.get("key"))
+            ser = find_series_element(chart, name)
+            if ser is not None:
+                delete_legend_entry(chart, _series_index(ser))
 
 
 def _bootstrap_chart(

@@ -10,6 +10,10 @@ Added (issue #9, Gap A — report-grade "last mile", first slice):
   `ValueAxisConfig`, written as native `c:catAx`/`c:valAx > c:title` on the
   category axis and both value axes (primary + secondary). Round-trips through
   save/reopen; off by default.
+- **Legend-entry control**: hide a single series from the legend via
+  `show_in_legend=False` on a `series_config` entry (or `legend: false` on a
+  spec series), emitting a `c:legendEntry delete=1` while the series stays on
+  the plot. (Manual XY legend placement is still not exposed.)
 - **Tick-label rotation**: `tick_label_rotation` (degrees) field on
   `CategoryAxisConfig` and `ValueAxisConfig`, written as `a:bodyPr@rot`. Also
   fixes `polish.set_axis_text` silently dropping the rotation when it rebuilds

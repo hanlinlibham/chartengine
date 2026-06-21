@@ -141,9 +141,11 @@ _SERIES_KEY_FIELDS = ("key", "column", "col", "field", "y")
 _SERIES_NAME_FIELDS = ("name", "label", "title")
 _SERIES_TYPE_FIELDS = ("type", "kind", "chart")
 _SERIES_AXIS_FIELDS = ("axis", "yaxis", "y_axis", "side")
+_SERIES_LEGEND_FIELDS = ("legend", "show_in_legend", "in_legend")
 
 _KNOWN_SERIES_FIELDS = set(
     _SERIES_KEY_FIELDS + _SERIES_NAME_FIELDS + _SERIES_TYPE_FIELDS + _SERIES_AXIS_FIELDS
+    + _SERIES_LEGEND_FIELDS
 ) | {"grouping", "stacked", "color", "line_width", "marker", "marker_size", "x_key", "size_key",
      "labels", "label_format", "last_point_label"}
 
@@ -953,6 +955,9 @@ def _normalize_series_list(raw_series, df, cat_col, default_type, default_groupi
         cfg = {"key": key, "name": name, "type": series_type or default_type, "axis": axis or "primary"}
         if grouping:
             cfg["grouping"] = grouping
+        legend_raw = _first(item, _SERIES_LEGEND_FIELDS, None)
+        if legend_raw is not None and not _coerce_bool(legend_raw):
+            cfg["show_in_legend"] = False
         series_config.append(cfg)
 
         ov = {}
