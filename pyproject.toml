@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,17 +8,45 @@ version = "0.1.0"
 description = "Editable PowerPoint chart engine for dual-axis financial charts"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    "python-pptx>=1.0.2",
-    "pandas>=2.2.0",
-    "lxml",
-    "openpyxl>=3.1.5",
+authors = [{ name = "pptchartengine contributors" }]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["powerpoint", "pptx", "charts", "finance", "openxml"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Office Suites",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+    # Upper bounds pinned 2026-05-24: pandas 3.0 broke chart metadata round-trip
+    # (categories_col read back as NaN). Treat this as a conservative published
+    # baseline; when relaxing, re-run full `pytest tests/` and install-from-wheel
+    # smoke tests under the target dependency set.
+    "python-pptx>=1.0.2,<1.1",
+    "pandas>=2.2,<3",
+    "numpy>=1.26,<2",
+    "lxml>=5,<6",
+    "openpyxl>=3.1,<4",
+]
+
+[project.urls]
+Homepage = "https://github.com/hanlinlibham/pptchartengine"
+Repository = "https://github.com/hanlinlibham/pptchartengine"
+Issues = "https://github.com/hanlinlibham/pptchartengine/issues"
+Changelog = "https://github.com/hanlinlibham/pptchartengine/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["pptchartengine*"]
 
 [tool.pytest.ini_options]
+addopts = ["-p", "no:asyncio"]
 pythonpath = ["src"]
 asyncio_default_fixture_loop_scope = "function"

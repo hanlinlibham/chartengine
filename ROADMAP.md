@@ -35,6 +35,27 @@ valuation_snapshot     → v0.3.0 →
 - **Skill dogfood 命中率**：Claude 用 skill 一次性产出可执行且语义正确代码 ≥ 80%
 - **PPT 编辑性**：reference.pptx 在 PowerPoint 打开后图表可双击编辑、无报错对话框
 
+## 2026-06-01 规划复盘
+
+当前项目已经更清楚地收敛成 **PowerPoint chart asset kernel**。这带来一个路线图修正：
+
+- PyPI 首发不应被完整报告级 golden、L3 visual diff、skill dogfood 阻塞。
+- 首发应先证明这个包作为独立 SDK 是可信的：安装、metadata、MIT license、README 定位、核心 create/parse/inspect/replace 契约、wheel/sdist 安装烟测。
+- golden / skill / dogfood 仍然重要，但它们证明的是“上层报告生成工作流”的质量，不应和内核包能否发布混在同一个门槛里。
+
+因此后续拆成两条线：
+
+1. **Package release track**：把 `pptchartengine` 作为 MIT Python 包发布出去，声明 alpha 状态和明确支持范围。
+2. **Report quality track**：继续用 `pptfi` / skill / golden reports 验证端到端金融报告效果。
+
+近期优先级：
+
+1. `P0` 发布前最后闸门：TestPyPI → 正式 PyPI → 安装烟测 → 国内镜像同步验证。
+2. `P0` GitHub CI：跑 `pytest`、`build`、`twine check`，并保留 release-readiness 测试。
+3. `P1` API 收口：复核 `__all__` 中 support 类导出，避免 0.x 早期暴露过多半内部符号。
+4. `P1` 核心 family 文档：为 combo / waterfall / scatter / bubble / range_snapshot 各补最小 cookbook。
+5. `P2` L3 visual diff：继续推进，但作为“声明 golden 支持”的门槛，而不是 PyPI 首发门槛。
+
 ## Milestones
 
 ### M1 — 引擎清理 & Slice 准备（约 2 周，至 ~2026-05-15）
@@ -43,7 +64,7 @@ valuation_snapshot     → v0.3.0 →
 
 - [x] 把 untracked 的 3 个文件 commit（工程师 `7bbe1c7` 完成）
 - [x] 整理已 modified 文件的 commit（同上）
-- [x] LICENSE 文件加入（Apache-2.0）
+- [x] LICENSE 文件加入（MIT）
 - [x] 选定 3 份 golden 并按分析类型命名、按优先级排序（[ADR-0003](docs/adr/0003-golden-reference-reports.md)）
 - [x] 建立 `docs/prds/` 目录骨架（含 [PRD-0001](docs/prds/0001-range-snapshot-visual-polish.md) range_snapshot 视觉精修）
 - [x] `2026-04-19-range-snapshot-handover.md` 归档到 `docs/prds/archive/`，关键判断转入 PRD-0001
@@ -80,15 +101,20 @@ Skill + Dogfood：
 
 发版准备：
 
-- [ ] `pyproject.toml` metadata 补全（authors / license / urls / classifiers）
-- [ ] CHANGELOG.md 启动，明确声明本版本支持范围
-- [ ] GitHub Actions Trusted Publishing 配置
-- [ ] CI 闸门接好（L1 + 涉及 family 的 L2 + golden #1 的 L3 + skill dogfood）
+- [x] `pyproject.toml` metadata 补全（authors / license / urls / classifiers）
+- [x] CHANGELOG.md 启动，明确声明本版本支持范围
+- [x] README 重写为开源入口，并补充相似项目差异说明
+- [x] release-readiness tests 覆盖 license / pyproject / README / MANIFEST
+- [x] GitHub Actions CI / Trusted Publishing workflow 文件
+- [x] GitHub `testpypi` / `pypi` environments 创建
+- [ ] TestPyPI / PyPI 侧 pending trusted publisher 配置
+- [ ] CI 闸门接好（pytest + build + twine check + release-readiness tests）
 - [ ] TestPyPI 验证一轮
 - [ ] v0.1.0 tag 发版到正式 PyPI（README 明确声明仅支持 slice 1 涉及的 family）
 - [ ] 国内镜像（清华 / 阿里）同步验证
+- [ ] golden #1 的 L3 + skill dogfood 作为发版后 quality milestone 接入
 
-退出条件：v0.1.0 在国内镜像可装、golden #1 在 CI nightly 自动比对绿、README 准确反映支持范围。
+退出条件：v0.1.0 在 PyPI / 国内镜像可装、README / CHANGELOG 准确反映 alpha 支持范围、核心契约测试与发布构建在 CI 绿。
 
 ### Slice 2 — factor_style_analysis（+6 ~ +9 周，目标 v0.2.0）
 

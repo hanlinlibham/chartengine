@@ -13,6 +13,7 @@ from lxml import etree
 from typing import Optional, Literal
 from datetime import datetime, timedelta
 
+from ._log import debug_print as print
 from .oxml_ns import NAMESPACES
 
 

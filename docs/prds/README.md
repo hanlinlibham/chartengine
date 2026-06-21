@@ -29,6 +29,7 @@ in-progress → completed → archive 或删除
 | # | 标题 | 状态 | 创建日期 | 计划 |
 |---|------|------|---------|------|
 | [0001](0001-range-snapshot-visual-polish.md) | Range Snapshot 视觉质量精修 | Deferred to Slice 3 | 2026-04-19 | v0.3.0 |
+| [0002](archive/0002-template-safe-inspect-replace.md) | Template-safe chart inspect + replace 实施 | Completed (archived 2026-05-24) | 2026-05-24 | first-batch 7 chart_type |
 
 ## 模板
 
@@ -49,6 +50,7 @@ in-progress → completed → archive 或删除
 
 ## 测试策略
 必须能映射到 L1 / L2 / L3 中具体哪些断言
+说明完成前需要哪些测试或可复现实证
 
 ## 参考材料
 原始资料、相关 ADR、依赖文件

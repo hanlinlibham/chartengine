@@ -21,6 +21,9 @@ ADR 记录"为什么这样设计"，不是"代码长什么样"。当一个决策
 | 0003 | [Golden reference reports 作为质量北极星](0003-golden-reference-reports.md) | Accepted | 2026-05-01 |
 | 0004 | [Round-trip metadata 作为核心约束](0004-round-trip-metadata-principle.md) | Accepted | 2026-05-01 |
 | 0005 | [AI 协作工程纪律](0005-ai-collaboration-discipline.md) | Accepted | 2026-05-01 |
+| 0006 | [模板安全的 chart 数据更新作为引擎契约](0006-template-safe-chart-data-update.md) | Proposed | 2026-05-24 |
+| 0007 | [PowerPoint chart asset kernel 的边界与 API 定位](0007-chart-asset-kernel-boundary.md) | Proposed | 2026-05-24 |
+| 0008 | [单人项目的轻量测试纪律](0008-lightweight-test-discipline.md) | Proposed | 2026-05-24 |
 
 ## 模板
 

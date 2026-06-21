@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+
+      - name: Set up Python
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package and test tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest build twine
+
+      - name: Check dependency metadata
+        run: python -m pip check
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      - name: Build wheel and sdist
+        run: python -m build --sdist --wheel
+
+      - name: Check distribution metadata
+        run: python -m twine check dist/*
+
+      - name: Smoke install built wheel
+        run: |
+          python -m venv /tmp/pptchartengine-smoke
+          /tmp/pptchartengine-smoke/bin/python -m pip install --upgrade pip
+          /tmp/pptchartengine-smoke/bin/python -m pip install dist/pptchartengine-*.whl
+          /tmp/pptchartengine-smoke/bin/python - <<'PY'
+          from pathlib import Path
+          import contextlib
+          import io
+          import pandas as pd
+          from pptx import Presentation
+          import pptchartengine
+          from pptchartengine import create_combo_chart, parse_chart_from_pptx
+
+          out = Path("/tmp/pptchartengine-smoke/combo-smoke.pptx")
+          df = pd.DataFrame(
+              {
+                  "Year": [2021, 2022, 2023],
+                  "Revenue": [100, 120, 130],
+                  "Profit": [10, 14, 16],
+              }
+          )
+          prs = Presentation()
+          slide = prs.slides.add_slide(prs.slide_layouts[6])
+          buf = io.StringIO()
+          with contextlib.redirect_stdout(buf):
+              create_combo_chart(
+                  slide=slide,
+                  df=df,
+                  categories_col="Year",
+                  series_config=[
+                      {"key": "Revenue", "name": "Revenue", "type": "bar", "axis": "primary"},
+                      {"key": "Profit", "name": "Profit", "type": "line", "axis": "secondary"},
+                  ],
+              )
+              prs.save(out)
+              parsed = parse_chart_from_pptx(out)
+
+          assert pptchartengine.__version__ == "0.1.0"
+          assert out.exists() and out.stat().st_size > 0
+          assert len(parsed) == 4
+          assert buf.getvalue() == ""
+          PY
+
+          /tmp/pptchartengine-smoke/bin/python -m pip check

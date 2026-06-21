@@ -31,8 +31,8 @@
 
 总览：
 
-- [原 combo 总览](/Users/jameslee/pension_plan/ppt-project/pptfi/output/combo-quality-previews/contact-sheet.png)
-- [range snapshot 总览](/Users/jameslee/pension_plan/ppt-project/pptfi/output/vertical-valuation-previews/contact-sheet.png)
+- [原 combo 总览](pptfi/output/combo-quality-previews/contact-sheet.png)
+- [range snapshot 总览](pptfi/output/vertical-valuation-previews/contact-sheet.png)
 
 对比后可以确认：
 
@@ -56,45 +56,45 @@
 
 ### `pptchartengine`
 
-- [range_snapshot.py](/Users/jameslee/pension_plan/ppt-project/pptchartengine/src/pptchartengine/range_snapshot.py)
-- [presets.py](/Users/jameslee/pension_plan/ppt-project/pptchartengine/src/pptchartengine/presets.py)
-- [__init__.py](/Users/jameslee/pension_plan/ppt-project/pptchartengine/src/pptchartengine/__init__.py)
-- [test_package_contract.py](/Users/jameslee/pension_plan/ppt-project/pptchartengine/tests/test_package_contract.py)
+- [range_snapshot.py](../../../src/pptchartengine/range_snapshot.py)
+- [presets.py](../../../src/pptchartengine/presets.py)
+- [__init__.py](../../../src/pptchartengine/__init__.py)
+- [test_package_contract.py](../../../tests/test_package_contract.py)
 
 ### `pptfi`
 
-- [operations.py](/Users/jameslee/pension_plan/ppt-project/pptfi/pptfi/operations.py)
-- [cli.py](/Users/jameslee/pension_plan/ppt-project/pptfi/pptfi/cli.py)
-- [range_snapshot composer layout](/Users/jameslee/pension_plan/ppt-project/pptfi/pptfi/composer/layouts/range_snapshot.py)
-- [layouts/__init__.py](/Users/jameslee/pension_plan/ppt-project/pptfi/pptfi/composer/layouts/__init__.py)
-- [README.md](/Users/jameslee/pension_plan/ppt-project/pptfi/README.md)
-- [test_cli_sdk_contract.py](/Users/jameslee/pension_plan/ppt-project/pptfi/tests/test_cli_sdk_contract.py)
-- [test_system_contract.py](/Users/jameslee/pension_plan/ppt-project/pptfi/tests/test_system_contract.py)
+- [operations.py](pptfi/pptfi/operations.py)
+- [cli.py](pptfi/pptfi/cli.py)
+- [range_snapshot composer layout](pptfi/pptfi/composer/layouts/range_snapshot.py)
+- [layouts/__init__.py](pptfi/pptfi/composer/layouts/__init__.py)
+- [README.md](pptfi/README.md)
+- [test_cli_sdk_contract.py](pptfi/tests/test_cli_sdk_contract.py)
+- [test_system_contract.py](pptfi/tests/test_system_contract.py)
 
 ### 建模 / 文档
 
-- [jp demo chart catalog](/Users/jameslee/pension_plan/ppt-project/pptfi/reference/jp_demo_chart_catalog.json)
-- [jp demo atlas html](/Users/jameslee/pension_plan/ppt-project/pptfi/reference/jp-demo-chart-atlas.html)
-- [range snapshot presets 文档](/Users/jameslee/pension_plan/ppt-project/pptfi/reference/range-snapshot-presets.md)
+- [jp demo chart catalog](pptfi/reference/jp_demo_chart_catalog.json)
+- [jp demo atlas html](pptfi/reference/jp-demo-chart-atlas.html)
+- [range snapshot presets 文档](pptfi/reference/range-snapshot-presets.md)
 
 ### 新增数据 / demo
 
-- [range_snapshot_demo.json](/Users/jameslee/pension_plan/ppt-project/pptfi/range_snapshot_demo.json)
-- [job_range_snapshot_demo.json](/Users/jameslee/pension_plan/ppt-project/pptfi/job_range_snapshot_demo.json)
-- [range_snapshot_sector_demo.json](/Users/jameslee/pension_plan/ppt-project/pptfi/range_snapshot_sector_demo.json)
-- [job_range_snapshot_sector_demo.json](/Users/jameslee/pension_plan/ppt-project/pptfi/job_range_snapshot_sector_demo.json)
+- [range_snapshot_demo.json](pptfi/range_snapshot_demo.json)
+- [job_range_snapshot_demo.json](pptfi/job_range_snapshot_demo.json)
+- [range_snapshot_sector_demo.json](pptfi/range_snapshot_sector_demo.json)
+- [job_range_snapshot_sector_demo.json](pptfi/job_range_snapshot_sector_demo.json)
 
-- [range_snapshot_valuation.csv](/Users/jameslee/pension_plan/ppt-project/pptfi/data/range_snapshot_valuation.csv)
-- [range_snapshot_sector_valuation.csv](/Users/jameslee/pension_plan/ppt-project/pptfi/data/range_snapshot_sector_valuation.csv)
-- [asx200_sector_valuation_snapshot.csv](/Users/jameslee/pension_plan/ppt-project/pptfi/data/asx200_sector_valuation_snapshot.csv)
-- [sp500_sector_valuation_snapshot.csv](/Users/jameslee/pension_plan/ppt-project/pptfi/data/sp500_sector_valuation_snapshot.csv)
-- [msci_emu_sector_valuation_snapshot.csv](/Users/jameslee/pension_plan/ppt-project/pptfi/data/msci_emu_sector_valuation_snapshot.csv)
-- [msci_japan_sector_valuation_snapshot.csv](/Users/jameslee/pension_plan/ppt-project/pptfi/data/msci_japan_sector_valuation_snapshot.csv)
+- [range_snapshot_valuation.csv](pptfi/data/range_snapshot_valuation.csv)
+- [range_snapshot_sector_valuation.csv](pptfi/data/range_snapshot_sector_valuation.csv)
+- [asx200_sector_valuation_snapshot.csv](pptfi/data/asx200_sector_valuation_snapshot.csv)
+- [sp500_sector_valuation_snapshot.csv](pptfi/data/sp500_sector_valuation_snapshot.csv)
+- [msci_emu_sector_valuation_snapshot.csv](pptfi/data/msci_emu_sector_valuation_snapshot.csv)
+- [msci_japan_sector_valuation_snapshot.csv](pptfi/data/msci_japan_sector_valuation_snapshot.csv)
 
 ### PowerPoint 实机导出脚本
 
-- [export_powerpoint_pdf.py](/Users/jameslee/pension_plan/ppt-project/pptfi/scripts/export_powerpoint_pdf.py)
-- [render_vertical_valuation_previews.py](/Users/jameslee/pension_plan/ppt-project/pptfi/scripts/render_vertical_valuation_previews.py)
+- [export_powerpoint_pdf.py](pptfi/scripts/export_powerpoint_pdf.py)
+- [render_vertical_valuation_previews.py](pptfi/scripts/render_vertical_valuation_previews.py)
 
 ## 现成产物
 
@@ -102,25 +102,25 @@
 
 目录：
 
-- [vertical valuation previews](/Users/jameslee/pension_plan/ppt-project/pptfi/output/vertical-valuation-previews)
+- [vertical valuation previews](pptfi/output/vertical-valuation-previews)
 
 关键文件：
 
-- [总览图](/Users/jameslee/pension_plan/ppt-project/pptfi/output/vertical-valuation-previews/contact-sheet.png)
-- [ASX 200 预览](/Users/jameslee/pension_plan/ppt-project/pptfi/output/vertical-valuation-previews/asx200-png/slide-1.png)
-- [S&P 500 预览](/Users/jameslee/pension_plan/ppt-project/pptfi/output/vertical-valuation-previews/sp500-png/slide-1.png)
-- [MSCI EMU 预览](/Users/jameslee/pension_plan/ppt-project/pptfi/output/vertical-valuation-previews/msci_emu-png/slide-1.png)
-- [MSCI Japan 预览](/Users/jameslee/pension_plan/ppt-project/pptfi/output/vertical-valuation-previews/msci_japan-png/slide-1.png)
+- [总览图](pptfi/output/vertical-valuation-previews/contact-sheet.png)
+- [ASX 200 预览](pptfi/output/vertical-valuation-previews/asx200-png/slide-1.png)
+- [S&P 500 预览](pptfi/output/vertical-valuation-previews/sp500-png/slide-1.png)
+- [MSCI EMU 预览](pptfi/output/vertical-valuation-previews/msci_emu-png/slide-1.png)
+- [MSCI Japan 预览](pptfi/output/vertical-valuation-previews/msci_japan-png/slide-1.png)
 
 ### 2. combo 预览
 
 目录：
 
-- [combo quality previews](/Users/jameslee/pension_plan/ppt-project/pptfi/output/combo-quality-previews)
+- [combo quality previews](pptfi/output/combo-quality-previews)
 
 关键文件：
 
-- [总览图](/Users/jameslee/pension_plan/ppt-project/pptfi/output/combo-quality-previews/contact-sheet.png)
+- [总览图](pptfi/output/combo-quality-previews/contact-sheet.png)
 
 ## 当前验证状态
 

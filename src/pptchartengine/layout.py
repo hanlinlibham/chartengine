@@ -11,6 +11,8 @@ from pptx.enum.chart import XL_LEGEND_POSITION, XL_TICK_MARK, XL_TICK_LABEL_POSI
 from pptx.util import Pt
 from typing import Optional, Dict, Any
 
+from ._log import debug_print as print
+
 # ============================================================================
 # 图例配置
 # ============================================================================
@@ -531,4 +533,3 @@ class ChartLayoutConfig:
             print(f"  ⚠️ 次值轴配置失败: {e}")
             import traceback
             traceback.print_exc()
-

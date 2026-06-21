@@ -10,6 +10,7 @@ from pptx.chart.chart import Chart
 import pandas as pd
 from collections import defaultdict
 
+from ._log import debug_print as print
 from .oxml import (
     extract_axis_ids,
     create_value_axis,

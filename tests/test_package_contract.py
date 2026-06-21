@@ -99,6 +99,35 @@ def _sample_finance_df() -> pd.DataFrame:
     )
 
 
+def test_public_create_and_parse_are_quiet_by_default(tmp_path, capsys):
+    df = pd.DataFrame(
+        {
+            "年份": [2021, 2022, 2023],
+            "营收": [100, 120, 130],
+            "利润": [10, 14, 16],
+        }
+    )
+    prs = Presentation()
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+
+    create_combo_chart(
+        slide=slide,
+        df=df,
+        categories_col="年份",
+        series_config=[
+            {"key": "营收", "name": "营收", "type": "bar", "axis": "primary"},
+            {"key": "利润", "name": "利润", "type": "line", "axis": "secondary"},
+        ],
+    )
+    output = tmp_path / "combo-smoke.pptx"
+    prs.save(output)
+
+    parse_chart_from_pptx(output)
+
+    captured = capsys.readouterr()
+    assert captured.out == ""
+
+
 def test_public_contract_exports():
     assert callable(create_combo_chart)
     assert callable(create_performance_compare_chart)
