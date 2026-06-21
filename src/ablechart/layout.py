@@ -284,16 +284,10 @@ class ValueAxisConfig:
         try:
             # ⭐ 通过 XML 直接设置主值轴，确保格式生效
             chart_element = chart._element
-            val_ax_elements = chart_element.findall('.//{http://schemas.openxmlformats.org/drawingml/2006/chart}valAx')
-            
-            # 主值轴：纵向图在左侧（'l'），横向条形图在底部（'b'）
-            primary_ax = None
-            for ax in val_ax_elements:
-                ax_pos = ax.find('.//{http://schemas.openxmlformats.org/drawingml/2006/chart}axPos')
-                if ax_pos is not None and ax_pos.get('val') in ('l', 'b'):
-                    primary_ax = ax
-                    break
-            
+            # 按 axId/文档顺序认主值轴（不靠 axPos，横向 bar 组合图也不会认错）
+            from .oxml.axes import resolve_value_axes
+            primary_ax, _ = resolve_value_axes(chart_element)
+
             if primary_ax is None:
                 print(f"  ⚠️ 未找到主值轴")
                 return
@@ -510,18 +504,11 @@ class ChartLayoutConfig:
     def _apply_secondary_axis_config(self, chart):
         """应用次值轴配置（通过 XML）"""
         try:
-            # 通过 XML 查找次值轴
+            # 通过 axId/文档顺序认次值轴（不靠 axPos='r'，横向组合图次轴在 't'）
             chart_element = chart._element
-            val_ax_elements = chart_element.findall('.//{http://schemas.openxmlformats.org/drawingml/2006/chart}valAx')
-            
-            # 次值轴通常是第二个 valAx（position='r'）
-            secondary_ax = None
-            for ax in val_ax_elements:
-                ax_pos = ax.find('.//{http://schemas.openxmlformats.org/drawingml/2006/chart}axPos')
-                if ax_pos is not None and ax_pos.get('val') == 'r':
-                    secondary_ax = ax
-                    break
-            
+            from .oxml.axes import resolve_value_axes
+            _, secondary_ax = resolve_value_axes(chart_element)
+
             if secondary_ax is None:
                 print(f"  ⚠️ 未找到次值轴")
                 return

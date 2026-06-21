@@ -41,6 +41,38 @@ def extract_axis_ids(plotArea) -> Tuple[int, int]:
     raise ValueError("无法找到现有坐标轴 ID")
 
 
+def resolve_value_axes(chart_element):
+    """Resolve (primary, secondary) value-axis elements by axId / document order.
+
+    The primary value axis is the first ``c:valAx`` — the same one
+    :func:`extract_axis_ids` reports as primary, and the one the builder's
+    primary plot group references via ``axId``. The secondary value axis is a
+    later ``c:valAx`` with a distinct ``axId`` (the one ``ensure_secondary_axis``
+    appended).
+
+    Robust where ``axPos`` is not: a horizontal bar combo puts the value axes at
+    ``axPos='b'``/``'t'`` (not ``'l'``/``'r'``), so position-based lookup would
+    pick the wrong axis or miss the secondary entirely.
+
+    Returns ``(primary_el, secondary_el_or_None)``; ``(None, None)`` if there is
+    no value axis.
+    """
+    _C = '{http://schemas.openxmlformats.org/drawingml/2006/chart}'
+    val_axes = chart_element.xpath('.//c:valAx')
+    if not val_axes:
+        return None, None
+    primary = val_axes[0]
+    primary_id_el = primary.find(f'{_C}axId')
+    primary_id = primary_id_el.get('val') if primary_id_el is not None else None
+    secondary = None
+    for ax in val_axes[1:]:
+        ax_id_el = ax.find(f'{_C}axId')
+        if ax_id_el is None or ax_id_el.get('val') != primary_id:
+            secondary = ax
+            break
+    return primary, secondary
+
+
 def create_value_axis(
     plotArea,
     ax_id: int,

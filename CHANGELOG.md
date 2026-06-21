@@ -15,8 +15,18 @@ Added (issue #9, Gap A — report-grade "last mile", first slice):
 - Rename the debug env var to `ABLECHART_DEBUG_STDOUT` (old
   `PPTCHARTENGINE_DEBUG_STDOUT` kept as an alias).
 
-Still open from issue #9: tick-label rotation, legend-entry control, and
-axis-resolution by `axId` instead of `axPos` (Gap B).
+Fixed (issue #9, Gap B — robustness):
+
+- **Value-axis resolution by `axId`** instead of `axPos`. `oxml.axes.resolve_value_axes`
+  identifies the primary/secondary value axis by the axId the plot group
+  references (document order), so `number_format` / scale land on the right
+  axis even on horizontal bar combos where the value axes sit at `axPos='b'`/`'t'`
+  (the old `axPos in ('l','b')` / `=='r'` lookup could miss the secondary
+  entirely).
+
+Still open from issue #9: tick-label rotation, legend-entry control, and the
+LibreOffice category-title double-render in secondary-axis combos (needs the
+4-axis combo restructure; Gap B's axId fix does **not** address it).
 
 ## 0.1.1 - 2026-06-21
 
