@@ -206,10 +206,20 @@ def set_axis_text(ax, font: str = AXIS_FONT, size_pt: float = AXIS_SIZE_PT, colo
     """轴刻度标签字体/字号/颜色（覆盖已有设置以保证一致性）。"""
     color = color or get_chart_token("axis_text")
     old = ax.find(f"{{{C}}}txPr")
+    # Preserve tick-label rotation set by config (bodyPr@rot/@vert) — polish
+    # rebuilds txPr for font/color consistency but must not drop rotation.
+    preserved = {}
     if old is not None:
+        old_bodyPr = old.find(f"{{{A}}}bodyPr")
+        if old_bodyPr is not None:
+            for attr in ("rot", "vert"):
+                if old_bodyPr.get(attr) is not None:
+                    preserved[attr] = old_bodyPr.get(attr)
         ax.remove(old)
     txPr = _axis_insert(ax, "txPr")
-    etree.SubElement(txPr, f"{{{A}}}bodyPr")
+    bodyPr = etree.SubElement(txPr, f"{{{A}}}bodyPr")
+    for attr, val in preserved.items():
+        bodyPr.set(attr, val)
     etree.SubElement(txPr, f"{{{A}}}lstStyle")
     p = etree.SubElement(txPr, f"{{{A}}}p")
     pPr = etree.SubElement(p, f"{{{A}}}pPr")

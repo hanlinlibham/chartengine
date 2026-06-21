@@ -10,6 +10,11 @@ Added (issue #9, Gap A — report-grade "last mile", first slice):
   `ValueAxisConfig`, written as native `c:catAx`/`c:valAx > c:title` on the
   category axis and both value axes (primary + secondary). Round-trips through
   save/reopen; off by default.
+- **Tick-label rotation**: `tick_label_rotation` (degrees) field on
+  `CategoryAxisConfig` and `ValueAxisConfig`, written as `a:bodyPr@rot`. Also
+  fixes `polish.set_axis_text` silently dropping the rotation when it rebuilds
+  the axis text element (an instance of the polish-vs-config clobbering noted in
+  #9) — rotation is now preserved across the polish pass. Off by default.
 - Document the remaining styling-granularity gaps (tick-label rotation, log
   scale, display units, legend-entry control) in README `## Current Limits`.
 - Rename the debug env var to `ABLECHART_DEBUG_STDOUT` (old
@@ -24,9 +29,9 @@ Fixed (issue #9, Gap B — robustness):
   (the old `axPos in ('l','b')` / `=='r'` lookup could miss the secondary
   entirely).
 
-Still open from issue #9: tick-label rotation, legend-entry control, and the
-LibreOffice category-title double-render in secondary-axis combos (needs the
-4-axis combo restructure; Gap B's axId fix does **not** address it).
+Still open from issue #9: legend-entry control, log scale, native display
+units, and the LibreOffice category-title double-render in secondary-axis
+combos (needs the 4-axis combo restructure).
 
 ## 0.1.1 - 2026-06-21
 

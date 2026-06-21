@@ -73,6 +73,28 @@ def _write_axis_title(ax, text, *, font_name=None, font_size_pt=None):
     ax.insert(insert_at, title)
 
 
+def _set_tick_label_rotation(ax, degrees):
+    """Set tick-label rotation on a value/category axis lxml element.
+
+    ``degrees`` is human-friendly (e.g. ``-45``); OOXML stores ``a:bodyPr@rot``
+    in 60000ths of a degree. Reuses the axis ``c:txPr`` created for fonts so a
+    single text-properties element carries both font and rotation.
+    """
+    from lxml import etree
+
+    txPr = ax.find(f"{{{_C_NS}}}txPr")
+    if txPr is None:
+        txPr = etree.SubElement(ax, f"{{{_C_NS}}}txPr")
+        etree.SubElement(txPr, f"{{{_A_NS}}}bodyPr")
+        etree.SubElement(txPr, f"{{{_A_NS}}}lstStyle")
+    bodyPr = txPr.find(f"{{{_A_NS}}}bodyPr")
+    if bodyPr is None:
+        bodyPr = etree.Element(f"{{{_A_NS}}}bodyPr")
+        txPr.insert(0, bodyPr)
+    bodyPr.set("rot", str(int(round(degrees * 60000))))
+    bodyPr.set("vert", "horz")
+
+
 # ============================================================================
 # 图例配置
 # ============================================================================
@@ -157,6 +179,7 @@ class CategoryAxisConfig:
         font_size_pt: float = 10,
         font_name: str = "微软雅黑",
         axis_title: Optional[str] = None,
+        tick_label_rotation: Optional[float] = None,
     ):
         """
         初始化横轴配置
@@ -181,6 +204,7 @@ class CategoryAxisConfig:
         self.font_size_pt = font_size_pt
         self.font_name = font_name
         self.axis_title = axis_title
+        self.tick_label_rotation = tick_label_rotation
 
     def apply_to_chart(self, chart):
         """应用到图表"""
@@ -227,6 +251,11 @@ class CategoryAxisConfig:
                                   font_name=self.font_name, font_size_pt=self.font_size_pt)
                 print(f"  - 横轴标题: {self.axis_title}")
 
+            # 刻度标签旋转
+            if self.tick_label_rotation is not None:
+                _set_tick_label_rotation(category_axis._element, self.tick_label_rotation)
+                print(f"  - 横轴标签旋转: {self.tick_label_rotation}°")
+
         except Exception as e:
             print(f"  ⚠️ 横轴配置失败: {e}")
 
@@ -251,6 +280,7 @@ class ValueAxisConfig:
         max_value: Optional[float] = None,
         major_unit: Optional[float] = None,
         axis_title: Optional[str] = None,
+        tick_label_rotation: Optional[float] = None,
     ):
         """
         初始化纵轴配置
@@ -278,6 +308,7 @@ class ValueAxisConfig:
         self.max_value = max_value
         self.major_unit = major_unit
         self.axis_title = axis_title
+        self.tick_label_rotation = tick_label_rotation
 
     def apply_to_chart(self, chart):
         """应用到图表（主值轴）"""
@@ -323,6 +354,11 @@ class ValueAxisConfig:
                 _write_axis_title(primary_ax, self.axis_title,
                                   font_name=self.font_name, font_size_pt=self.font_size_pt)
                 print(f"  - 主值轴标题: {self.axis_title}")
+
+            # 刻度标签旋转
+            if self.tick_label_rotation is not None:
+                _set_tick_label_rotation(primary_ax, self.tick_label_rotation)
+                print(f"  - 主值轴标签旋转: {self.tick_label_rotation}°")
             
             # 设置轴范围和刻度间隔（通过 XML）
             if self.min_value is not None or self.max_value is not None:
@@ -528,6 +564,11 @@ class ChartLayoutConfig:
                 _write_axis_title(secondary_ax, config.axis_title,
                                   font_name=config.font_name, font_size_pt=config.font_size_pt)
                 print(f"  - 次值轴标题: {config.axis_title}")
+
+            # 刻度标签旋转
+            if config.tick_label_rotation is not None:
+                _set_tick_label_rotation(secondary_ax, config.tick_label_rotation)
+                print(f"  - 次值轴标签旋转: {config.tick_label_rotation}°")
             
             # 设置字体
             if config.font_size_pt or config.font_name:
