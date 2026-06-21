@@ -276,7 +276,7 @@ class ChartParser:
                             )
                             print(f"  ✅ 成功从嵌入的 Excel 提取数据")
                             return df, categories_col
-                    except Exception as e2:
+                    except Exception:
                         continue
             
             # 如果上面都失败，尝试从 XML 中提取
@@ -842,7 +842,6 @@ def parse_chart_from_pptx(
         if hasattr(shape, 'chart'):
             if shape_idx == 0:
                 chart = shape.chart
-                chart_shape = shape
                 break
             shape_idx -= 1
     

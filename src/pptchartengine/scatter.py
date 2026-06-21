@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import io
-from typing import Any, Sequence
+from typing import Any
 
 import pandas as pd
 from openpyxl import load_workbook

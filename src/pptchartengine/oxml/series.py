@@ -5,11 +5,10 @@
 """
 
 from lxml import etree
-from typing import Dict, List, Optional
+from typing import Dict, List
 import pandas as pd
 
 from ..oxml_ns import NAMESPACES
-from ..date_axis import format_category_label
 
 
 def get_excel_col_name(col_idx: int) -> str:

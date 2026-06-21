@@ -537,7 +537,6 @@ def _series_bounds(df, series_group: List[Dict]) -> Optional[Tuple[float, float]
 def polish_xy_chart(chart, x_values, y_values, *, ticks: int = DEFAULT_TICK_COUNT) -> None:
     """散点/气泡收尾：两轴 nice 缩放（不强制含 0）+ 排版降噪。"""
     axes = find_axes(chart)
-    val_axes = [ax for ax, _pos in axes["val"]]
     # scatter/bubble 的 X 轴也是 valAx；按 axPos 区分: 'b' = X 轴
     for ax, pos in axes["val"]:
         values = x_values if pos == "b" else y_values

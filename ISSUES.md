@@ -132,15 +132,14 @@ to Done; when a workaround becomes permanent, promote it to Known limits.
   sort-by-current, subtitle); annotation out-of-range clipping (correctness bug);
   vband (recession shading); dark zero-baseline when data crosses zero; nice-unit
   ladder gains 1.5/3 steps (GTM 3%-step axes, tighter headroom); `sort` for single-
-  series rankings; "times"/"倍" number-format alias. Gap assessment:
-  workspace/260611/JPM差距评估.md (~85% GTM chart-pattern coverage; remaining gaps
-  are mini-tables/page chrome → pptfi, arrow legends + trendlines → engine backlog).
+  series rankings; "times"/"倍" number-format alias. Gap assessment (~85%
+  general market-guide chart-pattern coverage; remaining gaps are
+  mini-tables/page chrome → pptfi, arrow legends + trendlines → engine backlog).
 - `PCE-007` Capability-lowering pack for weak LLM callers.
   Result: `chart_spec_examples()` few-shot gallery (12 scenarios, keyword lookup);
   annotation auto-math (`average` computes mean from a series, `band` accepts
   quantiles — the engine does arithmetic, not the model); auto dual-axis in
-  inference mode when two columns differ >50x in magnitude. Assessment doc:
-  workspace/260611/模型能力评估.md.
+  inference mode when two columns differ >50x in magnitude.
 - `PCE-006` GTM pattern library (general market-guide deck patterns).
   Result: contribution preset (stacked parts + orange total line, palette skips
   orange), new `create_range_chart` family (range bar + average dash + current

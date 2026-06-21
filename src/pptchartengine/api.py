@@ -5,7 +5,6 @@
 隐藏所有实现细节。
 """
 
-import json
 from typing import List, Dict, Optional
 from pptx.slide import Slide
 from pptx.enum.chart import XL_CHART_TYPE
@@ -16,11 +15,7 @@ import pandas as pd
 from ._log import debug_print as print
 from .builder import ChartBuilder
 from .date_axis import format_category_label
-from .metadata import (
-    METADATA_SCHEMA_VERSION,
-    METADATA_SHEET_NAME,
-    _write_embedded_metadata,
-)
+from .metadata import _write_embedded_metadata
 
 XY_CHART_TYPES = ("scatter", "bubble")
 

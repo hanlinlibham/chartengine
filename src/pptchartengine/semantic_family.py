@@ -8,7 +8,7 @@ waterfall capabilities.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 import pandas as pd
 from pptx.enum.chart import XL_LEGEND_POSITION
