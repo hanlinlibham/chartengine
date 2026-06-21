@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pytest
 
-from chartengine import (
+from ablechart import (
     SeriesData,
     inspect_pptx_charts,
     replace_pptx_chart_data,

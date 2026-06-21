@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 from pptx import Presentation
 
-from chartengine import normalize_spec, render_chart
+from ablechart import normalize_spec, render_chart
 
 
 def _slide():
@@ -147,7 +147,7 @@ class TestGtmElements:
 
 
 def test_gtm_theme_available():
-    from chartengine import COLOR_SCHEMES
+    from ablechart import COLOR_SCHEMES
     assert "gtm" in COLOR_SCHEMES
     assert COLOR_SCHEMES["gtm"][0] == "595959"
 
@@ -156,7 +156,7 @@ class TestCapabilityLowering:
     """降低模型能力要求的三个机制。"""
 
     def test_examples_gallery(self):
-        from chartengine import chart_spec_examples
+        from ablechart import chart_spec_examples
         full = chart_spec_examples()
         assert full.count("```json") >= 12
         assert "range" in chart_spec_examples("估值")
@@ -177,7 +177,7 @@ class TestCapabilityLowering:
         assert any("分位自动计算" in w for w in plan.warnings)
 
     def test_average_without_value_or_series_is_error(self):
-        from chartengine import SpecError
+        from ablechart import SpecError
         with pytest.raises(SpecError, match="均值"):
             normalize_spec({"chart": "line",
                             "data": {"月": ["1"], "v": [1.0]},
@@ -224,7 +224,7 @@ class TestProfessionalPolishRound:
         plan = normalize_spec({"chart": "range", "data": self.RANGE,
                                "low": "低", "high": "高", "current": "当", "sort": "desc"})
         prs, slide = _slide()
-        from chartengine import create_range_chart
+        from ablechart import create_range_chart
         chart = create_range_chart(slide, plan.df, **plan.kwargs)
         # 排序后第一类目应为当前值更大的 A
         assert "<c:v>A</c:v>" in chart._chartSpace.xml.split("<c:v>B</c:v>")[0]
@@ -261,11 +261,11 @@ class TestProfessionalPolishRound:
         assert len(slide.shapes) - before >= 3  # 图表 + 竖带 + 标签
 
     def test_year_abbrev_format(self):
-        from chartengine.polish import strftime_from_excel
+        from ablechart.polish import strftime_from_excel
         assert strftime_from_excel("'yy") == "'%y"
 
     def test_nice_ladder_15_and_3(self):
-        from chartengine.polish import nice_range
+        from ablechart.polish import nice_range
         # max=62：1.5 档让轴顶收敛到 75 而不是 80/100
         nmin, nmax, unit = nice_range(0, 62, 5, include_zero="always")
         assert nmax == 75.0 and unit == 15.0

@@ -4,7 +4,7 @@ Belongs to: **replace** lifecycle per ADR-0007 §1.
 Realises: ADR-0006 §2 (chart data replacement).
 
 Given an existing chart in a .pptx (located via a :class:`ChartSelector` from
-:mod:`chartengine.inspect`), replace its categories / series / embedded
+:mod:`ablechart.inspect`), replace its categories / series / embedded
 workbook in-place while preserving shape identity, position, size, theme,
 style and editability.
 

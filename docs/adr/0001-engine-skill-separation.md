@@ -1,20 +1,20 @@
-# ADR-0001: chartengine 与 skill 的分离
+# ADR-0001: ablechart 与 skill 的分离
 
 - Status: Accepted
 - Date: 2026-05-01
 
 ## Context
 
-chartengine 当前状态：
+ablechart 当前状态：
 
 - 9,642 行 Python 代码，18 个模块，19 个 semantic family
-- 已是独立 git 仓库（`hanlinlibham/chartengine`）
+- 已是独立 git 仓库（`hanlinlibham/ablechart`）
 - 与 `pptfi`（报告级 orchestrator）的边界清晰：引擎管图表内核与图表级语义层，pptfi 管 connectors / job spec / 报告编排
 - 公开 API 表面 60+ 符号，已经事实上是一个库
 
 目标用户场景是金融分析师生成专业 PPT 报告，存在两类使用入口：
 
-1. Python 工程师 / `pptfi` 等上层项目：直接 `import chartengine` 调用
+1. Python 工程师 / `pptfi` 等上层项目：直接 `import ablechart` 调用
 2. Claude / AI agent：通过 skill 工作流读取代码模板、生成调用代码并执行
 
 把 9.6k 行直接塞进 skill 仓库会让 skill 严重臃肿，且让 `pptfi` 失去可复用的引擎依赖。
@@ -23,7 +23,7 @@ chartengine 当前状态：
 
 采用 **独立 pip 包 + 薄 skill** 架构：
 
-- `chartengine` 作为独立 pip 包发布到 PyPI
+- `ablechart` 作为独立 pip 包发布到 PyPI
 - 单独写一个 finance-chart skill，仅承担：
   - 工作流文档（金融报告高频场景的代码模板）
   - 输入数据 schema 说明

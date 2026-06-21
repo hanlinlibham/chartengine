@@ -1,6 +1,6 @@
 """Render a 4-family chart gallery (all real CATL data, distinct palettes).
 
-Each panel is a real editable PowerPoint chart produced by chartengine, then
+Each panel is a real editable PowerPoint chart produced by ablechart, then
 rendered to PNG. Captions state capabilities as plain facts (no comparisons).
 
 Families shown:
@@ -24,7 +24,7 @@ from pptx import Presentation
 from pptx.util import Inches
 from PIL import Image, ImageDraw, ImageFont
 
-from chartengine import (
+from ablechart import (
     create_combo_chart, create_waterfall_chart, create_bubble_chart,
     create_range_snapshot_chart,
     StyleConfig, ChartLayoutConfig, LegendConfig, CategoryAxisConfig, ValueAxisConfig,
@@ -162,7 +162,7 @@ def montage(pages, out):
     H = head_h + rows * ph + (rows + 1) * pad
     canvas = Image.new("RGB", (W, H), "white")
     d = ImageDraw.Draw(canvas)
-    d.text((pad, 30), "chartengine — chart families & palettes",
+    d.text((pad, 30), "ablechart — chart families & palettes",
            font=_font(52, bold=True), fill="#0F2A43")
     d.text((pad, 88),
            "Every panel is a real, editable PowerPoint chart — and can be parsed back into a DataFrame and updated in place.",

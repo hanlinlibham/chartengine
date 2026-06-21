@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# release.sh — cut a chartengine release via GitHub Actions + PyPI Trusted Publishing (path A).
+# release.sh — cut a ablechart release via GitHub Actions + PyPI Trusted Publishing (path A).
 #
 # What it does:
 #   1. Preflight: clean tree, on main, version sync (pyproject == __version__ == CHANGELOG),
@@ -14,7 +14,7 @@
 #
 # Prereq (one-time, manual on the PyPI website — cannot be scripted):
 #   Configure a Trusted Publisher / pending publisher on PyPI as documented in docs/release.md
-#   (project chartengine, owner hanlinlibham, repo chartengine, workflow publish.yml,
+#   (project ablechart, owner hanlinlibham, repo ablechart, workflow publish.yml,
 #   environment pypi).
 #
 # Usage:
@@ -54,7 +54,7 @@ PY
 )"
 [[ -n "$PYPROJECT_VERSION" ]] || fail "could not read version from pyproject.toml."
 
-PKG_VERSION="$(python3 -c "import sys; sys.path.insert(0,'src'); import chartengine; print(chartengine.__version__)")"
+PKG_VERSION="$(python3 -c "import sys; sys.path.insert(0,'src'); import ablechart; print(ablechart.__version__)")"
 [[ "$PYPROJECT_VERSION" == "$PKG_VERSION" ]] \
   || fail "version mismatch: pyproject=$PYPROJECT_VERSION vs __version__=$PKG_VERSION."
 
@@ -71,9 +71,9 @@ git rev-parse -q --verify "refs/tags/$TAG" >/dev/null \
   && fail "tag $TAG already exists." || true
 
 # first-publish name-availability guard (informational on later releases)
-HTTP="$(curl -s -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/chartengine/json" || echo 000)"
+HTTP="$(curl -s -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/ablechart/json" || echo 000)"
 if [[ "$HTTP" == "404" ]]; then
-  echo "==> PyPI: chartengine not yet published (first release will claim the name)."
+  echo "==> PyPI: ablechart not yet published (first release will claim the name)."
 elif [[ "$HTTP" == "200" ]]; then
   echo "==> PyPI: project exists (this is a follow-up release)."
 else
@@ -105,7 +105,7 @@ else
   echo "==> --yes: creating tag $TAG and publishing GitHub Release."
 fi
 
-git tag -a "$TAG" -m "chartengine $VERSION"
+git tag -a "$TAG" -m "ablechart $VERSION"
 git push origin "$TAG"
 
 # Extract this version's CHANGELOG section as the release notes.
@@ -122,7 +122,7 @@ PY
 )"
 
 gh release create "$TAG" \
-  --title "chartengine $VERSION" \
+  --title "ablechart $VERSION" \
   --notes "${NOTES:-Release $VERSION}" \
   --verify-tag
 
@@ -130,4 +130,4 @@ echo
 echo "==> GitHub Release $TAG published."
 echo "==> Trusted-Publishing workflow is now running. Watch it with:"
 echo "      gh run watch \$(gh run list --workflow=publish.yml --limit=1 --json databaseId -q '.[0].databaseId')"
-echo "==> When green, verify: https://pypi.org/project/chartengine/$VERSION/"
+echo "==> When green, verify: https://pypi.org/project/ablechart/$VERSION/"

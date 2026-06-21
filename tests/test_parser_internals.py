@@ -10,7 +10,7 @@ import math
 import pandas as pd
 import pytest
 
-from chartengine import ChartParser
+from ablechart import ChartParser
 
 
 @pytest.mark.parametrize(

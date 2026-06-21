@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 from pptx import Presentation
 
-from chartengine import (
+from ablechart import (
     SpecError,
     chart_spec_reference,
     normalize_spec,
@@ -15,7 +15,7 @@ from chartengine import (
     render_chart,
     validate_spec,
 )
-from chartengine.spec import normalize_color
+from ablechart.spec import normalize_color
 
 
 def _slide():

@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-import chartengine
+import ablechart
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,17 +28,17 @@ def _read_text(path: str) -> str:
 def test_pyproject_metadata_is_ready_for_public_distribution():
     project = tomllib.loads(_read_text("pyproject.toml"))["project"]
 
-    assert project["name"] == "chartengine"
-    assert project["version"] == chartengine.__version__
+    assert project["name"] == "ablechart"
+    assert project["version"] == ablechart.__version__
     assert project["readme"] == "README.md"
     assert project["requires-python"] == ">=3.10"
     assert project["license"] == "MIT"
-    assert project["authors"] == [{"name": "chartengine contributors"}]
+    assert project["authors"] == [{"name": "ablechart contributors"}]
 
     urls = project["urls"]
-    assert urls["Homepage"] == "https://github.com/hanlinlibham/chartengine"
-    assert urls["Repository"] == "https://github.com/hanlinlibham/chartengine"
-    assert urls["Issues"] == "https://github.com/hanlinlibham/chartengine/issues"
+    assert urls["Homepage"] == "https://github.com/hanlinlibham/ablechart"
+    assert urls["Repository"] == "https://github.com/hanlinlibham/ablechart"
+    assert urls["Issues"] == "https://github.com/hanlinlibham/ablechart/issues"
     assert urls["Changelog"].endswith("/CHANGELOG.md")
 
     dependencies = set(project["dependencies"])
@@ -56,7 +56,7 @@ def test_license_file_is_mit_and_not_stale_apache_text():
 
     assert license_text.startswith("MIT License")
     assert "Permission is hereby granted, free of charge" in license_text
-    assert "Copyright (c) 2026 chartengine contributors" in license_text
+    assert "Copyright (c) 2026 ablechart contributors" in license_text
     assert "Apache License" not in license_text
     assert "Apache-2.0" not in license_text
 
@@ -66,7 +66,7 @@ def test_readme_states_positioning_install_and_comparison():
     normalized = " ".join(readme.split())
 
     required_phrases = [
-        "pip install chartengine",
+        "pip install ablechart",
         "chart asset kernel",
         "not a full presentation generation framework",
         "inspect_pptx_charts",

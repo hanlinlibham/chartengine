@@ -1,4 +1,4 @@
-"""chartengine
+"""ablechart
 
 Core editable PowerPoint chart engine extracted from `ppt-st`.
 

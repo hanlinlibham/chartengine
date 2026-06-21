@@ -2,7 +2,7 @@
 
 import pytest
 
-from chartengine.polish import (
+from ablechart.polish import (
     _choose_tick_count,
     nice_range,
     strftime_from_excel,

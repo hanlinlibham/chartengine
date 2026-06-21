@@ -44,7 +44,7 @@ ppt-project 中已有素材作为分析类型抽取的原始材料（**仅作为
 
 ### 3. 目录结构与托管位置
 
-`goldens/` 目录托管在 **pptfi** 仓库——依赖方向上 goldens 需要 pptfi 的 job spec + 输入数据。chartengine 仅持有 visual diff harness 与 fixtures 接入逻辑。
+`goldens/` 目录托管在 **pptfi** 仓库——依赖方向上 goldens 需要 pptfi 的 job spec + 输入数据。ablechart 仅持有 visual diff harness 与 fixtures 接入逻辑。
 
 ```
 goldens/   (in pptfi repo)

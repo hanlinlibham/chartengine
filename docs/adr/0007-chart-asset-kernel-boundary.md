@@ -17,17 +17,17 @@ AI presentation 项目已经很多。很多项目都能做到:
 prompt / document -> structured JSON -> slides -> PPTX or HTML export
 ```
 
-如果 `chartengine` 也把自己定义成"AI 生成 PPT 的 Python 包",它会和通用 PPT 生成器、HTML-to-PPTX 项目、组件化 slide renderer 正面竞争。这个方向不是本仓库的优势。
+如果 `ablechart` 也把自己定义成"AI 生成 PPT 的 Python 包",它会和通用 PPT 生成器、HTML-to-PPTX 项目、组件化 slide renderer 正面竞争。这个方向不是本仓库的优势。
 
 本仓库已经通过 ADR-0001 明确自己是独立 chart engine,通过 ADR-0004 明确 round-trip metadata 是核心约束,通过 ADR-0006 明确 template-safe chart data update 是新增契约。现在需要把更上位的边界写清楚:
 
-`chartengine` 的价值不是生成整份报告,而是把专业数据变成 **PowerPoint 原生、可编辑、可更新、可解析、可验证的 chart asset**。
+`ablechart` 的价值不是生成整份报告,而是把专业数据变成 **PowerPoint 原生、可编辑、可更新、可解析、可验证的 chart asset**。
 
 这要求引擎长期死守确定性、可测试性和 PowerPoint 原生语义,而不是向上吸收 LLM、业务 slot、HTML 渲染或模板库产品逻辑。
 
 ## Decision
 
-`chartengine` 定位为 **PowerPoint chart asset kernel**。
+`ablechart` 定位为 **PowerPoint chart asset kernel**。
 
 它不是:
 
@@ -60,7 +60,7 @@ Public API 应围绕五类生命周期能力组织:
 5. `replace`  
    对已有 chart 原位替换数据,并保留 chart shape、样式、位置、尺寸和可编辑性。
 
-报告级 API、LLM API、模板库 API 不进入 `chartengine` public surface。
+报告级 API、LLM API、模板库 API 不进入 `ablechart` public surface。
 
 ### 2. ChartSpec 是技术 schema,不是业务 report spec
 
@@ -84,7 +84,7 @@ Public API 应围绕五类生命周期能力组织:
 - 数据源连接配置
 - HTML interaction config
 
-`pptfi` 可以定义更高层的 `SemanticReportSpec`,再翻译成一个或多个 engine `ChartSpec`。`ablemind` 可以用 Pydantic 定义 tool schema。`chartengine` 本身应保持轻量依赖:如果需要强校验,优先使用标准库 dataclass / typed dict / JSON-schema 文档;是否引入 Pydantic 必须单独决策,不能因为上层 tool schema 使用 Pydantic 就让 kernel 直接依赖它。
+`pptfi` 可以定义更高层的 `SemanticReportSpec`,再翻译成一个或多个 engine `ChartSpec`。`ablemind` 可以用 Pydantic 定义 tool schema。`ablechart` 本身应保持轻量依赖:如果需要强校验,优先使用标准库 dataclass / typed dict / JSON-schema 文档;是否引入 Pydantic 必须单独决策,不能因为上层 tool schema 使用 Pydantic 就让 kernel 直接依赖它。
 
 ### 3. Metadata 存储采用分层策略
 
@@ -127,11 +127,11 @@ template-safe replace 的默认验收来自 ADR-0006:
 
 ### 5. HTML 双输出属于上层,但可复用引擎语义
 
-本项目可以支持"同一语义 spec 同时输出可编辑 PPTX + 高交互 HTML",但 HTML renderer 不属于 `chartengine`。
+本项目可以支持"同一语义 spec 同时输出可编辑 PPTX + 高交互 HTML",但 HTML renderer 不属于 `ablechart`。
 
 边界如下:
 
-- `chartengine` 维护 chart-level semantic model 和 PowerPoint renderer。
+- `ablechart` 维护 chart-level semantic model 和 PowerPoint renderer。
 - `pptfi` 负责把 report-level semantic spec 翻译成 PPTX renderer 调用和 HTML renderer 调用。
 - HTML renderer 可以复用 engine 的 chart family catalog、data normalization、theme tokens,但不能让 engine 直接输出 ECharts/HTML。
 
@@ -173,15 +173,15 @@ template-safe replace 的默认验收来自 ADR-0006:
 - 新 public API 必须说明属于 create / parse / metadata / inspect / replace 哪一类。
 - 新 schema 字段必须判断是否属于 chart 技术层;如果是业务语义,应上移到 `pptfi`。
 - 新 metadata 位置必须说明 source of truth 和迁移策略。
-- 新 HTML 或 report-level 需求不得直接改 `chartengine` public API,除非能证明它是 chart-level 语义。
+- 新 HTML 或 report-level 需求不得直接改 `ablechart` public API,除非能证明它是 chart-level 语义。
 
 ## Alternatives Considered
 
-### A. 把 `chartengine` 做成完整 AI PPT 生成器
+### A. 把 `ablechart` 做成完整 AI PPT 生成器
 
 否决。该方向已有大量项目和商业产品,且会把 LLM、模板、页面布局、HTML、用户体验逻辑全部压入 kernel,破坏本仓库的可测试性和可复用性。
 
-### B. 把 `chartengine` 做成通用 chart library
+### B. 把 `ablechart` 做成通用 chart library
 
 否决。通用 chart library 会追求更多 chart type、更多视觉主题、更多输出格式,但本项目真正壁垒是 PowerPoint 原生可编辑 chart 的 round-trip 和 data update。
 

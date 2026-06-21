@@ -3,12 +3,12 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "chartengine"
+name = "ablechart"
 version = "0.1.0"
 description = "Editable PowerPoint chart engine for dual-axis financial charts"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [{ name = "chartengine contributors" }]
+authors = [{ name = "ablechart contributors" }]
 license = "MIT"
 license-files = ["LICENSE"]
 keywords = ["powerpoint", "pptx", "charts", "finance", "openxml"]
@@ -40,14 +40,14 @@ dependencies = [
 test = ["pytest", "tomli; python_version < '3.11'"]
 
 [project.urls]
-Homepage = "https://github.com/hanlinlibham/chartengine"
-Repository = "https://github.com/hanlinlibham/chartengine"
-Issues = "https://github.com/hanlinlibham/chartengine/issues"
-Changelog = "https://github.com/hanlinlibham/chartengine/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/hanlinlibham/ablechart"
+Repository = "https://github.com/hanlinlibham/ablechart"
+Issues = "https://github.com/hanlinlibham/ablechart/issues"
+Changelog = "https://github.com/hanlinlibham/ablechart/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["chartengine*"]
+include = ["ablechart*"]
 
 [tool.pytest.ini_options]
 addopts = ["-p", "no:asyncio"]

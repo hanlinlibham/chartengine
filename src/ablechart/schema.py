@@ -108,7 +108,7 @@ def chart_spec_schema() -> Dict[str, Any]:
 
     return {
         "$schema": "http://json-schema.org/draft-07/schema#",
-        "title": "chartengine chart spec",
+        "title": "ablechart chart spec",
         "type": "object",
         "properties": {
             "chart": {

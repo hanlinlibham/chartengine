@@ -18,7 +18,7 @@
 | **inspect** | 3 | inspect_pptx_charts + ChartInventoryItem + ChartSelector |
 | **replace** | 3 | replace_pptx_chart_data + ReplaceResult + SeriesData |
 | **support** | 68 | configs / themes / presets / registries / cleanup utilities |
-| **合计** | **127** | (`len(chartengine.__all__) == 127`) |
+| **合计** | **127** | (`len(ablechart.__all__) == 127`) |
 
 ## 1. CREATE — chart 生成
 
@@ -228,7 +228,7 @@ clean_chart
 1. **Lifecycle balance is healthy**: create (26) + parse (23) is the bulk;
    inspect (3) and replace (3) are intentionally small public surfaces.
 2. **metadata = 0 public**: the only structural gap. Closing via
-   `chartengine.metadata` module will raise the count and is the right
+   `ablechart.metadata` module will raise the count and is the right
    trigger for PCE-LIM-003 work.
 3. **support is ~55% of __all__** (68 / 123). Acceptable for a kernel that
    serves multiple upper-layer consumers (`pptfi`, `ablemind` tools, MCP)

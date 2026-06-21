@@ -1,4 +1,4 @@
-# chartengine Roadmap
+# ablechart Roadmap
 
 ## North Star
 
@@ -45,7 +45,7 @@ valuation_snapshot     → v0.3.0 →
 
 因此后续拆成两条线：
 
-1. **Package release track**：把 `chartengine` 作为 MIT Python 包发布出去，声明 alpha 状态和明确支持范围。
+1. **Package release track**：把 `ablechart` 作为 MIT Python 包发布出去，声明 alpha 状态和明确支持范围。
 2. **Report quality track**：继续用 `pptfi` / skill / golden reports 验证端到端金融报告效果。
 
 近期优先级：

@@ -11,8 +11,8 @@ These close two pre-0.1.0 coverage gaps:
 import pandas as pd
 from pptx import Presentation
 
-import chartengine as pce
-from chartengine import (
+import ablechart as pce
+from ablechart import (
     create_semantic_chart,
     list_semantic_families,
     get_semantic_chart_spec,

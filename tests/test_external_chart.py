@@ -2,13 +2,13 @@
 this engine.
 
 Why a separate suite: tests in ``test_inspect.py`` / ``test_replace.py``
-inline-generate fixtures via ``chartengine.create_*_chart``, which means
+inline-generate fixtures via ``ablechart.create_*_chart``, which means
 we're testing the engine against its own output. Real **template update**
 scenarios (ADR-0001 northern star) involve ``.pptx`` authored in PowerPoint
 desktop, Keynote, Google Slides export, or other engines.
 
 This file uses python-pptx's native ``slide.shapes.add_chart(...)`` API
-directly, bypassing **all** chartengine code paths during fixture
+directly, bypassing **all** ablechart code paths during fixture
 generation. If inspect/replace need engine-written metadata to work, these
 tests will fail.
 """
@@ -24,7 +24,7 @@ from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE
 from pptx.util import Inches
 
-from chartengine import (
+from ablechart import (
     SeriesData,
     inspect_pptx_charts,
     replace_pptx_chart_data,
@@ -32,7 +32,7 @@ from chartengine import (
 
 
 # ---------------------------------------------------------------------------
-# Fixture helper — pure python-pptx, no chartengine
+# Fixture helper — pure python-pptx, no ablechart
 # ---------------------------------------------------------------------------
 
 

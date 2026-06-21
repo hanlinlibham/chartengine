@@ -1,4 +1,4 @@
-# chartengine Issues
+# ablechart Issues
 
 Living log of open issues, known limitations, and historical breakages worth
 remembering. Order: **Open** (P0/P1/P2) → **Known limits** → **Done**.
@@ -47,7 +47,7 @@ to Done; when a workaround becomes permanent, promote it to Known limits.
 - `PCE-LIM-003` **Metadata persistence: layer 1 only (consolidated 2026-05-24).**
   ADR-0007 §3 sketches a layered strategy (workbook hidden sheet → semantic
   anchor → custom XML part → shape alt text). **Layer 1 is now consolidated**
-  in `src/chartengine/metadata.py` with `ChartMetadataV1` + `write_chart_metadata`
+  in `src/ablechart/metadata.py` with `ChartMetadataV1` + `write_chart_metadata`
   public (PCE-009 done). Layer 2 (semantic_anchor) is implemented separately
   in `semantic_anchor.py` for shape-composition families. Layer 3 (custom XML
   part) and layer 4 (shape alt text) require a separate PRD before
@@ -68,7 +68,7 @@ to Done; when a workaround becomes permanent, promote it to Known limits.
   gates so v0.1.0 can ship as an honest alpha kernel package.
 
 - `PCE-009` **Metadata consolidation: layer 1 single-source-of-truth.** (2026-05-24)
-  Created `src/chartengine/metadata.py` with authoritative
+  Created `src/ablechart/metadata.py` with authoritative
   `METADATA_SHEET_NAME` + `METADATA_SCHEMA_VERSION` constants (previously
   duplicated in `api.py` and `parser.py` — silent-drift hazard). New public
   API: `ChartMetadataV1` dataclass + `write_chart_metadata` function;

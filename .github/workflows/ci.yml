@@ -48,19 +48,19 @@ jobs:
 
       - name: Smoke install built wheel
         run: |
-          python -m venv /tmp/chartengine-smoke
-          /tmp/chartengine-smoke/bin/python -m pip install --upgrade pip
-          /tmp/chartengine-smoke/bin/python -m pip install dist/chartengine-*.whl
-          /tmp/chartengine-smoke/bin/python - <<'PY'
+          python -m venv /tmp/ablechart-smoke
+          /tmp/ablechart-smoke/bin/python -m pip install --upgrade pip
+          /tmp/ablechart-smoke/bin/python -m pip install dist/ablechart-*.whl
+          /tmp/ablechart-smoke/bin/python - <<'PY'
           from pathlib import Path
           import contextlib
           import io
           import pandas as pd
           from pptx import Presentation
-          import chartengine
-          from chartengine import create_combo_chart, parse_chart_from_pptx
+          import ablechart
+          from ablechart import create_combo_chart, parse_chart_from_pptx
 
-          out = Path("/tmp/chartengine-smoke/combo-smoke.pptx")
+          out = Path("/tmp/ablechart-smoke/combo-smoke.pptx")
           df = pd.DataFrame(
               {
                   "Year": [2021, 2022, 2023],
@@ -84,10 +84,10 @@ jobs:
               prs.save(out)
               parsed = parse_chart_from_pptx(out)
 
-          assert chartengine.__version__ == "0.1.0"
+          assert ablechart.__version__ == "0.1.0"
           assert out.exists() and out.stat().st_size > 0
           assert len(parsed) == 4
           assert buf.getvalue() == ""
           PY
 
-          /tmp/chartengine-smoke/bin/python -m pip check
+          /tmp/ablechart-smoke/bin/python -m pip check

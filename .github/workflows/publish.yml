@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/chartengine
+      url: https://test.pypi.org/p/ablechart
     permissions:
       id-token: write
       contents: read
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/chartengine
+      url: https://pypi.org/p/ablechart
     permissions:
       id-token: write
       contents: read

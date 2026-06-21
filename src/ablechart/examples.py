@@ -3,7 +3,7 @@
 对能力较弱的模型，「按场景检索一个能跑的最小示例」远比读完整文档可靠。
 用法：把 ``chart_spec_examples()`` 的输出拼进提示词，或按场景取单条::
 
-    from chartengine import chart_spec_examples
+    from ablechart import chart_spec_examples
     prompt += chart_spec_examples("估值分位")     # 单场景
     prompt += chart_spec_examples()               # 全部
 

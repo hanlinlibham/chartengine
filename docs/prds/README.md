@@ -1,6 +1,6 @@
 # Product Requirement Documents (PRD)
 
-本目录记录 `chartengine` 的产品需求文档。
+本目录记录 `ablechart` 的产品需求文档。
 
 PRD 是 [ADR-0005](../adr/0005-ai-collaboration-discipline.md) 定义的"目的地文档"，用于在重大变更前与 AI 达成共享设计概念，避免静默误对齐。
 

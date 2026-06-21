@@ -19,7 +19,7 @@ ADR-0005 把 TDD 定为新 family / 新 public API 的默认流程:
 
 这个规则的出发点是对的:AI 协作下需要可验证契约,否则容易写出"看起来对但不可审计"的代码。
 
-但 `chartengine` 目前主要由一个开发者推进。过细的 TDD 分档、流程证明和文档标注会把单人项目拖成团队合规流程。PowerPoint / OOXML / `python-pptx` 又经常需要先探索对象模型,不适合每个小改动都强制红绿循环。
+但 `ablechart` 目前主要由一个开发者推进。过细的 TDD 分档、流程证明和文档标注会把单人项目拖成团队合规流程。PowerPoint / OOXML / `python-pptx` 又经常需要先探索对象模型,不适合每个小改动都强制红绿循环。
 
 因此本 ADR 弱化 ADR-0005 §1:保留"完成前必须有证据"这个质量底线,取消一刀切 TDD 和繁琐分档。
 
@@ -116,4 +116,4 @@ ADR-0005 §1 更新为:
 
 ### C. 完全取消测试纪律
 
-否决。`chartengine` 的价值来自 PowerPoint 原生可编辑、round-trip、replace invariant 和 fail-loud;没有证据就不能形成可信内核。
+否决。`ablechart` 的价值来自 PowerPoint 原生可编辑、round-trip、replace invariant 和 fail-loud;没有证据就不能形成可信内核。

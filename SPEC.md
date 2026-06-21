@@ -9,7 +9,7 @@
 ## 核心 API
 
 ```python
-from chartengine import render_chart, validate_spec, chart_spec_reference
+from ablechart import render_chart, validate_spec, chart_spec_reference
 
 chart = render_chart(slide, spec)            # 渲染（默认静默，quiet=False 打开引擎日志）
 chart = render_chart(slide, spec, df=df)     # 数据也可以从外部 DataFrame 传入

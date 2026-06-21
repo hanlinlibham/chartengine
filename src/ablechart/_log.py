@@ -7,7 +7,7 @@ import logging
 import os
 
 
-_LOGGER = logging.getLogger("chartengine")
+_LOGGER = logging.getLogger("ablechart")
 
 
 def debug_print(*args, **kwargs) -> None:

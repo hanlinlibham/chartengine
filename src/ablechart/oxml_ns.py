@@ -1,4 +1,4 @@
-"""OOXML 命名空间常量 — 所有 `chartengine` 子模块共享"""
+"""OOXML 命名空间常量 — 所有 `ablechart` 子模块共享"""
 
 NAMESPACES = {
     'c': 'http://schemas.openxmlformats.org/drawingml/2006/chart',

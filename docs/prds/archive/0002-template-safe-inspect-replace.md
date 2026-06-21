@@ -10,7 +10,7 @@
 
 ## 问题陈述
 
-ADR-0001 把项目定位为「专业数据驱动的可编辑 PowerPoint 更新与生成平台」,北极星场景是**模板更新**而非从零生成。这要求 `chartengine` 提供两个核心能力:
+ADR-0001 把项目定位为「专业数据驱动的可编辑 PowerPoint 更新与生成平台」,北极星场景是**模板更新**而非从零生成。这要求 `ablechart` 提供两个核心能力:
 
 1. **inspect**:扫描任意 `.pptx`(包括非引擎生成的),输出 chart inventory + 稳定 selector,让上层(`pptfi` / `ablemind`)能定位 chart、判断可替换性。
 2. **replace**:对已定位的 chart 原位替换数据,保留 shape identity、位置、尺寸、主题、可编辑性。
@@ -49,7 +49,7 @@ ADR-0004 round-trip 5 件套约束已经覆盖「引擎自己生成的 chart 还
 
 新增两个模块,严格遵守 ADR-0007 五类生命周期分类。
 
-### `src/chartengine/inspect.py`(**inspect** lifecycle)
+### `src/ablechart/inspect.py`(**inspect** lifecycle)
 
 **Public**:
 - `ChartSelector` dataclass(selector 优先级 ADR-0006 §1:`explicit_name` > `shape_id + chart_part` > `(slide_index, chart_index_on_slide)` fallback)
@@ -63,7 +63,7 @@ ADR-0004 round-trip 5 件套约束已经覆盖「引擎自己生成的 chart 还
 - explicit_name 检测排除 python-pptx 默认 prefix(`Chart ` / `Placeholder ` / `Picture ` / ...)
 - replaceable 由 `chart_type ∈ first-batch ∧ has_embedded_workbook` 决定
 
-### `src/chartengine/replace.py`(**replace** lifecycle)
+### `src/ablechart/replace.py`(**replace** lifecycle)
 
 **Public**:
 - `SeriesData` dataclass(name + values + 可选 x_values / size_values,字段需求按 chart_type 变化)
@@ -101,7 +101,7 @@ ADR-0004 round-trip 5 件套约束已经覆盖「引擎自己生成的 chart 还
 |---|---|---|
 | `tests/test_inspect.py` | 6 | 空 .pptx / 无 chart slides / 单 combo / 多 chart 顺序 / selector 稳定性 / read-only 不修改输入 |
 | `tests/test_replace.py` | 14 | happy path / input 不修改 / shape identity / chart_type 不变 / categories 长度校验 / data 回流 / selector 回传 / scatter happy / bubble happy / scatter 缺 x_values 失败 / bubble 缺 size_values 失败 / category chart 缺 categories 失败 / 1 类原 happy / scatter_preserve / bubble_preserve |
-| `tests/test_external_chart.py` | 4 | fixture 用 python-pptx 原生 API 生成(**绕开 chartengine code path**),验证 inspect/replace 在 non-engine-authored chart 上仍 work + sample template 0-chart sanity |
+| `tests/test_external_chart.py` | 4 | fixture 用 python-pptx 原生 API 生成(**绕开 ablechart code path**),验证 inspect/replace 在 non-engine-authored chart 上仍 work + sample template 0-chart sanity |
 | `tests/test_round_trip_matrix.py` | 9 | parametrize 3 chart_type × 3 contract — 系统化保证 ADR-0006 §5 invariant 在每个 first-batch chart_type 上一致 |
 | `tests/test_package_contract.py` | 29 | 历史 contract test(create + parse round-trip),作为 baseline 回归保护 |
 
@@ -117,12 +117,12 @@ ADR-0004 round-trip 5 件套约束已经覆盖「引擎自己生成的 chart 还
 
 ## 参考材料
 
-- `chartengine/docs/adr/0004-round-trip-metadata-principle.md` — round-trip 5 件套强约束
-- `chartengine/docs/adr/0006-template-safe-chart-data-update.md` — chart inventory / data replacement / 首批 chart 类型 / 八条 invariant
-- `chartengine/docs/adr/0007-chart-asset-kernel-boundary.md` — kernel 五类生命周期 / ChartSpec 技术层禁污染 / replace 不退化为重建
+- `ablechart/docs/adr/0004-round-trip-metadata-principle.md` — round-trip 5 件套强约束
+- `ablechart/docs/adr/0006-template-safe-chart-data-update.md` — chart inventory / data replacement / 首批 chart 类型 / 八条 invariant
+- `ablechart/docs/adr/0007-chart-asset-kernel-boundary.md` — kernel 五类生命周期 / ChartSpec 技术层禁污染 / replace 不退化为重建
 - `design/ppt-specialist/adr/0001-professional-data-update-ppt-platform.md` — 上层产品定位(模板更新北极星)
 - `design/ppt-specialist/ablemind-integration-review.md` — ablemind 接口层评审,确认 inspect/replace tool surface 跟 capability layer 对齐
-- `chartengine/ISSUES.md` — PCE-004 / 005 / LIM-001 / LIM-002 沉淀
+- `ablechart/ISSUES.md` — PCE-004 / 005 / LIM-001 / LIM-002 沉淀
 
 ## 完成定义
 

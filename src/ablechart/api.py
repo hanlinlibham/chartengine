@@ -82,8 +82,8 @@ def create_combo_chart(
         ... )
         
         >>> # 示例 2: 自定义样式 + 布局
-        >>> from chartengine import StyleConfig
-        >>> from chartengine import (
+        >>> from ablechart import StyleConfig
+        >>> from ablechart import (
         ...     ChartLayoutConfig,
         ...     LegendConfig,
         ...     CategoryAxisConfig,
@@ -451,7 +451,7 @@ def _fix_embedded_excel_dates(chart, df: pd.DataFrame, categories_col: str, date
         traceback.print_exc()
 
 
-# Metadata persistence moved to ``chartengine.metadata`` (2026-05-24).
+# Metadata persistence moved to ``ablechart.metadata`` (2026-05-24).
 # ``_write_embedded_metadata`` is now re-exported from this module via the
 # top-of-file ``from .metadata import _write_embedded_metadata``, so callers
 # that do ``from .api import _write_embedded_metadata`` continue working

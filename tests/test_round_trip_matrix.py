@@ -28,7 +28,7 @@ from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE
 from pptx.util import Inches
 
-from chartengine import (
+from ablechart import (
     SeriesData,
     create_bubble_chart,
     create_combo_chart,
@@ -117,7 +117,7 @@ def _make_native_category_chart(
     single_series: bool = False,
 ):
     """Native python-pptx chart fixture for category-based charts
-    (bar / line / area / pie). Bypasses ``chartengine.create_*`` —
+    (bar / line / area / pie). Bypasses ``ablechart.create_*`` —
     simulates "external author" so the test verifies that inspect+replace
     work without engine-written metadata."""
     prs = Presentation()

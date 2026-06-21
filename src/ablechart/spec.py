@@ -11,7 +11,7 @@
 
 最小示例（一个 JSON 就能画双轴组合图）::
 
-    from chartengine import render_chart
+    from ablechart import render_chart
 
     render_chart(slide, {
         "title": "营收与增速",
@@ -1316,7 +1316,7 @@ def _existing_line_width(ser) -> Optional[int]:
 # ============================================================================
 
 _SPEC_REFERENCE = """\
-# chartengine Chart Spec 速查
+# ablechart Chart Spec 速查
 
 一个 JSON dict 描述一张图。所有字段大小写不敏感、支持中英文别名、未知字段只警告不报错。
 

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `chartengine` will be documented in this file.
+All notable changes to `ablechart` will be documented in this file.
 
 ## 0.1.0 - 2026-06-21
 

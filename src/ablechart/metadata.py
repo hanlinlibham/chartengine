@@ -90,7 +90,7 @@ def write_chart_metadata(chart, metadata: ChartMetadataV1) -> None:
     Routes through layer 1 (embedded workbook hidden sheet). Failure is
     currently swallowed with a stderr-like log (preserves prior
     ``_write_embedded_metadata`` semantics); a future schema version should
-    promote this to a typed :class:`chartengine.replace` style result or
+    promote this to a typed :class:`ablechart.replace` style result or
     raise a dedicated ``MetadataWriteError``.
     """
     _write_workbook_hidden_sheet(
